@@ -122,10 +122,11 @@ class Function:
         # send the command to turn in pump on
         # self.uart_connect.ser.write(self.crc_calc.export("PUMP_OUT_OFF"))
         self.check_timeout("PUMP_OUT_OFF")
+    
 
 
-function_obj = Function()
 
-# Gọi các phương thức của đối tượng Function để thực hiện các hành động
+# function_obj = Function()
 
-function_obj.turn_mixer_1_on()
+
+# function_obj.turn_mixer_1_on()

@@ -7,8 +7,6 @@ class Task:
             self.mixer = mixer
             self.area = area
             self.start_time = start_time
-            self.is_active = False
-            self.cnt = 0
         else:
             print("invalid mixer")
     def __str__(self) -> str:
@@ -36,13 +34,13 @@ class Task_List:
 
 # for testing
 # from datetime import datetime
-# now = datetime(1,1,1,2,30)
+# now = datetime.now()
 # current_time = now.strftime("%H:%M")
-# print("Current Time =", current_time, type(now))
+# print("Current Time =", current_time, type(current_time))
 
 # task1 = Task("1", 5, [20, 35, 10], "2", "18:30")
-# task3 = Task("1", 5, [20, 35, 10], "2", "19:00")
-# task4 = Task("1", 5, [20, 35, 10], "2", "01:35")
+# task3 = Task("3", 5, [20, 35, 10], "2", "19:00")
+# task4 = Task("4", 5, [20, 35, 10], "2", "01:35")
 # task2 = Task("2", 5, [20, 35, 10], "3", "18:03")
 # task_list = Task_List()
 # task_list.add(task1)
