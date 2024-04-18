@@ -1,5 +1,3 @@
-
-
 class CRC_MOD_BUS:
     crc_lists = dict()
     def __init__(self, crc_lists: dict) -> None:
@@ -21,10 +19,15 @@ class CRC_MOD_BUS:
         crc_high = temp_crc % 256
         return [crc_low, crc_high]
     def export(self, name: str) -> list:
-        crc_check = self.calculate(self.crc_lists[str])
-        crc_format = self.crc_lists[str] + crc_check
+        crc_check = self.calculate(self.crc_lists[name])
+        crc_format = self.crc_lists[name] + crc_check
         return  crc_format
 
 # for testing   
-from my_parameters import *
+# from my_parameters import crc_lists
+# crc_calc = CRC_MOD_BUS(crc_lists)
 
+# for data_name, data_values in crc_calc.crc_lists.items():
+#     # Export CRC for each data
+#     export_crc = crc_calc.export(data_name)
+#     print("CRC for", data_name, ":", export_crc)
