@@ -53,7 +53,7 @@ class UART:
         
 
 # # for testing
-# temp = UART()
-# while True:
-#     temp.ReadSerial()
-#     time.sleep(0.01)
+temp = UART()
+while True:
+    temp.ReadSerial()
+    time.sleep(0.01)
