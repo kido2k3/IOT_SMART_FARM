@@ -1,11 +1,10 @@
-# this is Adafruit Connection module by paho-mqtt
+# this is server Connection module by paho-mqtt
 import paho.mqtt.client as mqtt
 import sys
 
-
 class Server:
     # Some config paras
-    AIO_FEED_NAMES = list()
+    AIO_FEEDS = dict()
     AIO_USERNAME =  str()
     AIO_KEY = ''
     AIO_HOST = str()
@@ -16,18 +15,17 @@ class Server:
     # The callback for when the client receives a CONN_ACK response from the server.
 
     def connected(self, client, user_data, flags, rc):
-        # Connected function will be called when the client is connected to Adafruit IO.
+        # Connected function will be called when the client is connected to server
         if (rc == 0):
             print('Successfully connecting to the server')
         else:
             print("connecting to the server fail")
-        for topic in self.AIO_FEED_NAMES:
-            client.subscribe(f'{self.AIO_USERNAME}/feeds/{topic}')
+        for topic in self.AIO_FEEDS.values():
+            client.subscribe(topic)
 
     def subscribed(self, client, user_data, mid, granted_qos):
         # This method is called when the client subscribes to a new feed.
-        print('Subscribed successfully to {0} with QoS {1}'.format(
-            self.AIO_FEED_NAMES[mid-1], granted_qos[0]))
+        print('Subscribed successfully to {0} with QoS {1}'.format(mid, granted_qos[0]))
 
     # The callback for when a  message is received from the server.
 
@@ -46,11 +44,12 @@ class Server:
         print('Disconnected from server')
         sys.exit(1)
 
-    def __init__(self, lists_of_feeds: list, host:str, user:str, password:str):
-        self.AIO_FEED_NAMES = lists_of_feeds
+    def __init__(self, list_of_feeds: list, host:str, user:str, password:str):
         self.AIO_HOST = host
         self.AIO_USERNAME = user
         self.AIO_KEY = password
+        for topic in list_of_feeds:
+            self.AIO_FEEDS.update({topic: f"{self.AIO_USERNAME}/feeds/{topic}"})
         self.client = mqtt.Client()
         # Enter credentials
         self.client.username_pw_set(self.AIO_USERNAME, self.AIO_KEY)
@@ -66,9 +65,12 @@ class Server:
 
 # for testing
 # import random
-# temp = AdafruitConnection()
+# import time
+# temp = Server(["phong", "phong2"], "mqtt.ohstem.vn","kido2k3","")
+# time.sleep(2)
 # while True:
-#     value = random.randint(0, 1)
-#     print(f'Publishing {value} to {temp.AIO_FEED_NAMES[0]}.')
-#     temp.client.publish(f'{temp.AIO_USERNAME}/feeds/{temp.AIO_FEED_NAMES[0]}', value)
-#     time.sleep(10)
+#     value = random.randint(0, 100)
+#     print(f'Publishing {value}.')
+#     temp.client.publish(temp.AIO_FEEDS["phong"], value)
+#     temp.client.publish(temp.AIO_FEEDS["kido"], value + 1)
+#     time.sleep(2)
