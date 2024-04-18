@@ -64,13 +64,13 @@ class Server:
 
 
 # for testing
-import random
-import time
-temp = Server(["phong", "kido"], "mqtt.ohstem.vn","kido2k3","")
-time.sleep(2)
-while True:
-    value = random.randint(0, 100)
-    print(f'Publishing {value}.')
-    temp.client.publish(temp.AIO_FEEDS["phong"], value)
-    temp.client.publish(temp.AIO_FEEDS["kido"], value + 1)
-    time.sleep(2)
+# import random
+# import time
+# temp = Server(["phong", "kido"], "mqtt.ohstem.vn","kido2k3","")
+# time.sleep(2)
+# while True:
+#     value = random.randint(0, 100)
+#     print(f'Publishing {value}.')
+#     temp.client.publish(temp.AIO_FEEDS["phong"], value)
+#     temp.client.publish(temp.AIO_FEEDS["kido"], value + 1)
+#     time.sleep(2)
