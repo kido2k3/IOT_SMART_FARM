@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 import sys
 
 
-class AdafruitConnection:
+class Server:
     # Some config paras
     AIO_FEED_NAMES = list()
     AIO_USERNAME =  str()
