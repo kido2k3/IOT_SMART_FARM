@@ -66,7 +66,7 @@ class Server:
 # for testing
 # import random
 # import time
-# temp = Server(["phong", "kido"], "mqtt.ohstem.vn","kido2k3","")
+# temp = Server(["phong", "phong2"], "mqtt.ohstem.vn","kido2k3","")
 # time.sleep(2)
 # while True:
 #     value = random.randint(0, 100)

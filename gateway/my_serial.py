@@ -27,7 +27,7 @@ class UART:
             port = ports[i]
             strPort = str(port)
             # print(strPort)
-            if "USB-SERIAL CH340" in strPort:
+            if "USB" in strPort:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
         return commPort
@@ -36,7 +36,21 @@ class UART:
         pass
 
     def ReadSerial(self):
-        pass
+        bytesToRead = self.ser.inWaiting()
+        if bytesToRead > 0:
+            out = self.ser.read(bytesToRead)
+            data_array = [b for b in out]
+            if data_array[0] == 0:
+                data_array.pop(0)
+            print(data_array)
+            if len(data_array) >= 7:
+                array_size = len(data_array)
+                value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
+                return value
+            else:
+                return -1
+        return 0
+        
 
 # # for testing
 # temp = UART()

@@ -1,6 +1,5 @@
 import statistics
-from my_serial import CMD
-from my_fsm import received, st_query, ST_IDLE
+
 ST_GETTING = 0
 ST_CAL_AND_SENDING = 1
 

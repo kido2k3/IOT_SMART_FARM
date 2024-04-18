@@ -21,7 +21,8 @@ crc_lists = {
 }
 
 # for my_server.py
-list_of_feeds = [""]
-host = ""
-user = ""
+list_of_feeds = ["phong"]
+host = "mqtt.ohstem.vn"
+user = "kido2k3"
 password = ""
+
