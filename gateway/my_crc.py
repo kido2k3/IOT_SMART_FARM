@@ -1,4 +1,4 @@
-
+from my_parameters import *
 
 class CRC_MOD_BUS:
     crc_lists = dict()
@@ -6,8 +6,21 @@ class CRC_MOD_BUS:
         
         self.crc_lists = crc_lists
         pass
-    def calculate(para: list) -> list:
-        return
-    def export(name: str) -> list:
+    def calculate(self, para: list) -> list:
+        temp_crc = 0xFFFF
+        for idx in para:
+            temp_crc ^= idx
+            for jdx in range(8):
+                if (temp_crc & 0x0001):
+                    temp_crc = temp_crc >> 1
+                    temp_crc ^= 0xA001
+                else:
+                    temp_crc = temp_crc >> 1
 
-        return 
+        crc_low = temp_crc >> 8
+        crc_high = temp_crc % 256
+        return [crc_low, crc_high]
+    def export(self, name: str) -> list:
+        crc_check = self.calculate(self.crc_lists[str])
+        crc_format = self.crc_lists[str] + crc_check
+        return  crc_format
