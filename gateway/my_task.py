@@ -1,6 +1,7 @@
 from my_serial import UART
 # turn mixer 1 on
 def turn_mixer_1_on(my_serial: UART):
+    
     pass
 # turn mixer 1 off
 # turn mixer 2 on

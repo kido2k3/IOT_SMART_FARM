@@ -3,3 +3,4 @@
 .vscode
 
 gateway/__pycache__
+.idea/
