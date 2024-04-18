@@ -1,4 +1,3 @@
-# for my_crc.py
 crc_lists = {
     "mixer1_ON": [1, 6, 0, 0, 0, 255],
     "mixer1_OFF": [1, 6, 0, 0, 0, 0],
@@ -20,9 +19,6 @@ crc_lists = {
     "soil_humidity": [10, 3, 0, 7, 0, 1]
 }
 
-# for my_server.py
-list_of_feeds = ["phong"]
-host = "mqtt.ohstem.vn"
-user = "kido2k3"
-password = ""
+# Speed of the mixer (ml/s)
+speed = 2
 
