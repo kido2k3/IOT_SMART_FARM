@@ -30,7 +30,7 @@ class OS:
             print("there is no process in queue")
             return
         while self.wait_queue[0].delay == 0:
-            self.wait_queue[0].func(56)
+            self.wait_queue[0].func()
             if self.wait_queue[0].period != 0:
                 func = self.wait_queue[0].func
                 delay = self.wait_queue[0].period
@@ -47,10 +47,10 @@ class OS:
     
 # for testing
 import time
-def printA(a):
-    print(a)
-def printB(b):
-    print(b)
+def printA():
+    print("A")
+def printB():
+    print("B")
 def printC():
     print("C")
 def printD():
