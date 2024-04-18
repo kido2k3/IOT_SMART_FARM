@@ -22,7 +22,7 @@ class UART:
     def getPort(self):
         ports = serial.tools.list_ports.comports()
         N = len(ports)
-        commPort = "None"
+        commPort = NONE
         for i in range(0, N):
             port = ports[i]
             strPort = str(port)
@@ -53,7 +53,7 @@ class UART:
         
 
 # # for testing
-temp = UART()
-while True:
-    temp.ReadSerial()
-    time.sleep(0.01)
+# temp = UART()
+# while True:
+#     temp.ReadSerial()
+#     time.sleep(0.01)

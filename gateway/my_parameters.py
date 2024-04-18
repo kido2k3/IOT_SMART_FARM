@@ -20,5 +20,10 @@ crc_lists = {
 }
 
 # Speed of the mixer (ml/s)
-speed = 2
+SPEED = 2
 
+# for my_server.py
+LIST_OF_FEEDS = ["phong"]
+HOST = "mqtt.ohstem.vn"
+USER = "kido2k3"
+PASSWORD = ""
