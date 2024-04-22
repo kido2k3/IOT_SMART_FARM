@@ -22,7 +22,7 @@ class UART:
     def getPort(self):
         ports = serial.tools.list_ports.comports()
         N = len(ports)
-        commPort = "None"
+        commPort = NONE
         for i in range(0, N):
             port = ports[i]
             strPort = str(port)
@@ -31,6 +31,7 @@ class UART:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
         return commPort
+        # return "COM5"
 
     def ProcessData(self, data):
         pass
@@ -46,10 +47,11 @@ class UART:
             if len(data_array) >= 7:
                 array_size = len(data_array)
                 value = data_array[array_size - 4] * 256 + data_array[array_size - 3]
+                # print(value)
                 return value
             else:
                 return -1
-        return 0
+        return -2
         
 
 # # for testing

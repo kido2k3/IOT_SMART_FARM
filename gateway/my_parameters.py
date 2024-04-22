@@ -1,28 +1,29 @@
-# for my_crc.py
 crc_lists = {
-    "mixer1_ON": [1, 6, 0, 0, 0, 255],
-    "mixer1_OFF": [1, 6, 0, 0, 0, 0],
-    "mixer2_ON": [2, 6, 0, 0, 0, 255],
-    "mixer2_OFF": [2, 6, 0, 0, 0, 0],
-    "mixer3_ON": [3, 6, 0, 0, 0, 255],
-    "mixer3_OFF": [3, 6, 0, 0, 0, 0],
-    "selector1_ON": [4, 6, 0, 0, 0, 255],
-    "selector1_OFF": [4, 6, 0, 0, 0, 0],
-    "selector2_ON": [5, 6, 0, 0, 0, 255],
-    "selector2_OFF": [5, 6, 0, 0, 0, 0],
-    "selector3_ON": [6, 6, 0, 0, 0, 255],
-    "selector3_OFF": [6, 6, 0, 0, 0, 0],
-    "pump_in_ON": [7, 6, 0, 0, 0, 255],
-    "pump_in_OFF": [7, 6, 0, 0, 0, 0],
-    "pump_out_ON": [8, 6, 0, 0, 0, 255],
-    "pump_out_OFF": [8, 6, 0, 0, 0, 0],
-    "soil_temperature":[10 ,3, 0, 6, 0, 1],
-    "soil_humidity": [10, 3, 0, 7, 0, 1]
+    "MIXER1_ON": [1, 6, 0, 0, 0, 255],
+    "MIXER1_OFF": [1, 6, 0, 0, 0, 0],
+    "MIXER2_ON": [2, 6, 0, 0, 0, 255],
+    "MIXER2_OFF": [2, 6, 0, 0, 0, 0],
+    "MIXER3_ON": [3, 6, 0, 0, 0, 255],
+    "MIXER3_OFF": [3, 6, 0, 0, 0, 0],
+    "SELECTOR1_ON": [4, 6, 0, 0, 0, 255],
+    "SELECTOR1_OFF": [4, 6, 0, 0, 0, 0],
+    "SELECTOR2_ON": [5, 6, 0, 0, 0, 255],
+    "SELECTOR2_OFF": [5, 6, 0, 0, 0, 0],
+    "SELECTOR3_ON": [6, 6, 0, 0, 0, 255],
+    "SELECTOR3_OFF": [6, 6, 0, 0, 0, 0],
+    "PUMP_IN_ON": [7, 6, 0, 0, 0, 255],
+    "PUMP_IN_OFF": [7, 6, 0, 0, 0, 0],
+    "PUMP_OUT_ON": [8, 6, 0, 0, 0, 255],
+    "PUMP_OUT_OFF": [8, 6, 0, 0, 0, 0],
+    "SOIL_TEMPERATURE":[10 ,3, 0, 6, 0, 1],
+    "SOIL_HUMIDITY": [10, 3, 0, 7, 0, 1]
 }
 
-# for my_server.py
-list_of_feeds = ["phong"]
-host = "mqtt.ohstem.vn"
-user = "kido2k3"
-password = ""
+# Speed of the mixer (ml/s)
+SPEED = 2
 
+# for my_server.py
+LIST_OF_FEEDS = ["phong"]
+HOST = "mqtt.ohstem.vn"
+USER = "kido2k3"
+PASSWORD = ""
