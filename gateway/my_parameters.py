@@ -27,3 +27,14 @@ LIST_OF_FEEDS = ["phong"]
 HOST = "mqtt.ohstem.vn"
 USER = "kido2k3"
 PASSWORD = ""
+
+#for state machine
+ST_IDLE = 0
+ST_MIXER1 = 1
+ST_MIXER2 = 2
+ST_MIXER3 = 3
+ST_PUMP_IN = 4
+ST_SELECTOR = 5
+ST_PUMP_OUT = 6
+ST_END_STATE = 7
+TIMER_ONE = 4
