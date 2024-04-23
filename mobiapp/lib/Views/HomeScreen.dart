@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mobiapp/Controllers/Controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Controller _controller = Controller();
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -543,7 +545,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 50,
                             height: 50,
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _controller.navigateToCreateScreen(context);
+                                },
                               icon: Icon(Icons.add_circle_outline_outlined, size: 40,),
                             ),
                           ),
@@ -569,7 +573,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 50,
                             height: 50,
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _controller.navigateToHistoryScreen(context);
+                              },
                               icon: Icon(Icons.history_outlined, size: 40,),
                             ),
                           ),

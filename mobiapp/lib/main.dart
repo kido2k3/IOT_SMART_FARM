@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobiapp/Views/CreateScreen.dart';
+import 'package:mobiapp/Views/HistoryScreen.dart';
 import 'package:mobiapp/Views/WelcomeScreen.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const CreateScreen(),
+      home: const HistoryScreen(),
     );
   }
 }

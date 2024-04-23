@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobiapp/Controllers/Controller.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -10,7 +12,45 @@ class CreateScreen extends StatefulWidget {
 
 class _CreateScreenState extends State<CreateScreen> {
   final Controller _controller = Controller();
-  String? _selectedItem = "Khu 1";
+
+  String? _area = "....";
+  String _name ='';
+  double _flow1 =0.0;
+  double _flow2 =0.0;
+  double _flow3 =0.0;
+  double _cycle =0.0;
+  String _startTime = '00:00';
+  String _stopTime = '00:00';
+  List<Map<String, dynamic>> DataSet = [];
+
+  void addDataSet(String _name, String? _area, double _flow1, double _flow2, double _flow3, double _cycle,
+  String _startTime, String _stopTime, List<Map<String, dynamic>> DataSet) {
+    DataSet.add({
+      'name': _name,
+      'area': _area,
+      'concentration': {
+        'flow1': _flow1,
+        'flow2': _flow2,
+        'flow3': _flow3,
+      },
+      'cycle': _cycle,
+      'starttime': _startTime,
+      'stoptime': _stopTime,
+    });
+  }
+
+  void _updateStartTime(String newTime) {
+    setState(() {
+      _startTime = newTime;
+    });
+  }
+
+  void _updateStopTime(String newTime) {
+    setState(() {
+      _stopTime = newTime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -46,17 +86,27 @@ class _CreateScreenState extends State<CreateScreen> {
                       bottom: BorderSide(width: 1),
                     ),
                   ),
-                  child: Text(
-                      'Create a new Fertilizer Mixer',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                        height: 0,
-                        letterSpacing: -0.24,
+                  child: Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            _controller.navigateToHomeScreen(context);
+                          },
+                          icon: Icon(Icons.arrow_back_ios_outlined, size: 30,),
                       ),
+                      Text(
+                        'Create a new Fertilizer Mixer',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                          letterSpacing: -0.24,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -92,9 +142,13 @@ class _CreateScreenState extends State<CreateScreen> {
                       SizedBox(
                         width: 300,
                         child: TextFormField(
+                          textAlign: TextAlign.center,
                           decoration: const InputDecoration(
                             hintText: "..................",
                           ),
+                          onChanged: (name){
+                            _name = name;
+                          },
                         ),
                       ),
                     ],
@@ -103,7 +157,7 @@ class _CreateScreenState extends State<CreateScreen> {
               ),
               Positioned(
                 left: (screenSize.width - 141)/2,
-                top: 650,
+                bottom: 180,
                 child: Container(
                   width: 141,
                   height: 45,
@@ -115,7 +169,19 @@ class _CreateScreenState extends State<CreateScreen> {
                     ),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      addDataSet(_name, _area, _flow1, _flow2, _flow3, _cycle, _startTime, _stopTime, DataSet);
+                      // print('Name: ${DataSet[0]['name']}');
+                      // print('Area: ${DataSet[0]['area']}');
+                      // print('1 st Fertilizer concentration: ${DataSet[0]['concentration']['flow1']}');
+                      // print('2 nd Fertilizer concentration: ${DataSet[0]['concentration']['flow2']}');
+                      // print('3 rd Fertilizer concentration: ${DataSet[0]['concentration']['flow3']}');
+                      // print('Cycle: ${DataSet[0]['cycle']}');
+                      // print('Start Time: ${DataSet[0]['starttime']}');
+                      // print('Stop Time: ${DataSet[0]['stoptime']}');
+
+                      DataSet.clear();
+                    },
                     child: Text.rich(
                         TextSpan(
                           text:"CREATE",
@@ -137,12 +203,12 @@ class _CreateScreenState extends State<CreateScreen> {
                 top: 332,
                 child: Container(
                   width: 390,
-                  height: 290,
+                  height: 345,
                   decoration: ShapeDecoration(
                     color: Colors.white.withOpacity(0.800000011920929),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(25),
                     ),
                   ),
                   child: Column(
@@ -176,15 +242,15 @@ class _CreateScreenState extends State<CreateScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    _selectedItem ?? '',
+                                    _area ?? '',
                                     style: TextStyle(fontSize: 14, color: Colors.black),
                                   ),
                                 ),
                                 PopupMenuButton<String>(
                                   icon: Icon(Icons.arrow_drop_down_circle_outlined),
-                                  onSelected: (String newValue) {
+                                  onSelected: (area) {
                                     setState(() {
-                                      _selectedItem = newValue;
+                                      _area = area;
                                     });
                                   },
                                   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -222,16 +288,34 @@ class _CreateScreenState extends State<CreateScreen> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 50,),
+                          SizedBox(width: 10,),
                           Container(
-                            width: 60,
-                            height: 24,
+                            width: 100,
+                            height: 30,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(width: 0.1),
+                                borderRadius: BorderRadius.circular(15),
                               ),
+                            ),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              cursorColor: Colors.black,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+                              ],
+                              onChanged: (flow1){
+                                setState(() {
+                                  _flow1 = double.parse(flow1);
+                                });
+                              },
                             ),
                           ),
                           SizedBox(width: 10,),
@@ -252,16 +336,34 @@ class _CreateScreenState extends State<CreateScreen> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 45,),
+                          SizedBox(width: 10,),
                           Container(
-                            width: 60,
-                            height: 24,
+                            width: 95,
+                            height: 30,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(width: 0.1),
+                                borderRadius: BorderRadius.circular(15),
                               ),
+                            ),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              cursorColor: Colors.black,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+                              ],
+                              onChanged: (flow2){
+                                setState(() {
+                                  _flow2 = double.parse(flow2);
+                                });
+                              },
                             ),
                           ),
                           SizedBox(width: 10,),
@@ -282,16 +384,34 @@ class _CreateScreenState extends State<CreateScreen> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 50,),
+                          SizedBox(width: 10,),
                           Container(
-                            width: 60,
-                            height: 24,
+                            width: 100,
+                            height: 30,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(15),
                               ),
+                            ),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              cursorColor: Colors.black,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+                              ],
+                              onChanged: (flow3){
+                                setState(() {
+                                  _flow3 = double.parse(flow3);
+                                });
+                              },
                             ),
                           ),
                           SizedBox(width: 10,),
@@ -315,13 +435,27 @@ class _CreateScreenState extends State<CreateScreen> {
                           SizedBox(width: 230,),
                           Container(
                             width: 88,
-                            height: 24,
+                            height: 30,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(width: 0.1),
+                                borderRadius: BorderRadius.circular(15),
                               ),
+                            ),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              cursorColor: Colors.black,
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
                             ),
                           ),
                         ],
@@ -341,16 +475,74 @@ class _CreateScreenState extends State<CreateScreen> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 140,),
+                          SizedBox(width: 115,),
                           Container(
-                            width: 88,
-                            height: 24,
+                            width: 115,
+                            height: 50,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(width: 0.5),
+                                borderRadius: BorderRadius.circular(20),
                               ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 50,
+                                      child: TextField(
+                                        onChanged: (value) {
+                                          if (value.length == 2) {
+                                            if (int.parse(value) < 60) {
+                                              _updateStartTime('$value:${_startTime.split(':')[1]}');
+                                            }
+                                          } else if (value.length == 1) {
+                                            _updateStartTime('$value:${_startTime.split(':')[1]}');
+                                          }
+                                        },
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(2),
+                                        ],
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          hintText: 'HH',
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      ':',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Container(
+                                      width: 50,
+                                      child: TextField(
+                                        onChanged: (value) {
+                                          if (value.length == 2) {
+                                            if (int.parse(value) < 60) {
+                                              _updateStartTime('${_startTime.split(':')[0]}:$value');
+                                            }
+                                          } else if (value.length == 1) {
+                                            _updateStartTime('${_startTime.split(':')[0]}:$value');
+                                          }
+                                        },
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(2),
+                                        ],
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          hintText: 'MM',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -370,38 +562,79 @@ class _CreateScreenState extends State<CreateScreen> {
                               letterSpacing: -0.24,
                             ),
                           ),
-                          SizedBox(width: 140,),
+                          SizedBox(width: 115,),
                           Container(
-                            width: 88,
-                            height: 24,
+                            width: 115,
+                            height: 50,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 0.25),
-                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(width: 0.5),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
+                            child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: 50,
+                                    child: TextField(
+                                      onChanged: (value) {
+                                        if (value.length == 2) {
+                                          if (int.parse(value) < 60) {
+                                            _updateStopTime('$value:${_stopTime.split(':')[1]}');
+                                          }
+                                        } else if (value.length == 1) {
+                                          _updateStopTime('$value:${_stopTime.split(':')[1]}');
+                                        }
+                                      },
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(2),
+                                      ],
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText: 'HH',
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    ':',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Container(
+                                    width: 50,
+                                    child: TextField(
+                                      onChanged: (value) {
+                                        if (value.length == 2) {
+                                          if (int.parse(value) < 60) {
+                                            _updateStopTime('${_stopTime.split(':')[0]}:$value');
+                                          }
+                                        } else if (value.length == 1) {
+                                          _updateStopTime('${_stopTime.split(':')[0]}:$value');
+                                        }
+                                      },
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(2),
+                                      ],
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText: 'MM',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                           ),
                         ],
                       ),
                     ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 17,
-                top: 58,
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage("https://via.placeholder.com/35x35"),
-                      fit: BoxFit.fill,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
                   ),
                 ),
               ),

@@ -15,4 +15,12 @@ class Controller extends ControllerMVC {
   void navigateToHomeScreen(BuildContext context) {
     Model.navigateToHomeScreen(context);
   }
+
+  void navigateToCreateScreen(BuildContext context) {
+    Model.navigateToCreateScreen(context);
+  }
+
+  void navigateToHistoryScreen(BuildContext context) {
+    Model.navigateToHistoryScreen(context);
+  }
 }
