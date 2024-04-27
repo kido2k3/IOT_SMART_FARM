@@ -4,10 +4,11 @@ from my_serial import *
 from my_crc import CRC_MOD_BUS
 
 class Command:
-    glob_connect = UART()
-    crc_calc = CRC_MOD_BUS(crc_lists)
-    data = 0
-    flag = 0
+    def __init__(self, glob_connect = None, crc_calc = None, data = 0, flag =0):
+        self.glob_connect = UART()
+        self.crc_calc = CRC_MOD_BUS(crc_lists)
+        self.data = data
+        self.flag = flag
 
     def read_connection(self):
         self.data = self.glob_connect.ReadSerial()
