@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobiapp/Controllers/Controller.dart';
@@ -11,6 +10,7 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
+  List<Map<String,dynamic>> DataSet = [];
   final Controller _controller = Controller();
 
   String? _area = "....";
@@ -21,10 +21,9 @@ class _CreateScreenState extends State<CreateScreen> {
   double _cycle =0.0;
   String _startTime = '00:00';
   String _stopTime = '00:00';
-  List<Map<String, dynamic>> DataSet = [];
 
   void addDataSet(String _name, String? _area, double _flow1, double _flow2, double _flow3, double _cycle,
-  String _startTime, String _stopTime, List<Map<String, dynamic>> DataSet) {
+      String _startTime, String _stopTime, List<Map<String, dynamic>> DataSet) {
     DataSet.add({
       'name': _name,
       'area': _area,
@@ -171,15 +170,6 @@ class _CreateScreenState extends State<CreateScreen> {
                   child: TextButton(
                     onPressed: () {
                       addDataSet(_name, _area, _flow1, _flow2, _flow3, _cycle, _startTime, _stopTime, DataSet);
-                      // print('Name: ${DataSet[0]['name']}');
-                      // print('Area: ${DataSet[0]['area']}');
-                      // print('1 st Fertilizer concentration: ${DataSet[0]['concentration']['flow1']}');
-                      // print('2 nd Fertilizer concentration: ${DataSet[0]['concentration']['flow2']}');
-                      // print('3 rd Fertilizer concentration: ${DataSet[0]['concentration']['flow3']}');
-                      // print('Cycle: ${DataSet[0]['cycle']}');
-                      // print('Start Time: ${DataSet[0]['starttime']}');
-                      // print('Stop Time: ${DataSet[0]['stoptime']}');
-
                       DataSet.clear();
                     },
                     child: Text.rich(
