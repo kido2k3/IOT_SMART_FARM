@@ -13,6 +13,7 @@ class _TaskBoxState extends State<TaskBox> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
