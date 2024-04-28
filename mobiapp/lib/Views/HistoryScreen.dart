@@ -13,6 +13,14 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   final Controller _controller = Controller();
+  // late List<Map<String, dynamic>> DataSet = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   DataSet = _controller.getDataSet();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,20 +92,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: ListView.builder(
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
-                              title: Text(
-                                  'Item $index'
-                              ),
-                              subtitle: Text(
-                                  'Subtitle $index'
-                              ),
-                              leading: Text('$index'),
-                            );
-                          },
-                      ),
+                      // child: ListView.builder(
+                      //     itemCount: 10,
+                      //     itemBuilder: (BuildContext context, int index) {
+                      //       return ListTile(
+                      //         title: Text(
+                      //             'Item $index'
+                      //         ),
+                      //         subtitle: Text(
+                      //             'Subtitle $index'
+                      //         ),
+                      //         leading: Text('$index'),
+                      //       );
+                      //     },
+                      // ),
+                      // child: Text(
+                      //   DataSet.isEmpty ? 'no data':
+                      //   'name: ${DataSet[0]['name']} \n '
+                      //       'area: ${DataSet[0]['area']} \n'
+                      //       'concentration 1st fertilizer: ${DataSet[0]['concentration']['flow1']} \n'
+                      //       'concentration 2nd fertilizer: ${DataSet[0]['concentration']['flow2']} \n'
+                      //       'concentration 3rd fertilizer: ${DataSet[0]['concentration']['flow3']} \n',
+                      // ),
                     ),
                   ),
                   // Positioned(

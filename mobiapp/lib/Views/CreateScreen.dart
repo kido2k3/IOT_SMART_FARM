@@ -10,33 +10,16 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  List<Map<String,dynamic>> DataSet = [];
+  // late List<Map<String, dynamic>> DataSet = [];
   final Controller _controller = Controller();
-
   String? _area = "....";
   String _name ='';
   double _flow1 =0.0;
   double _flow2 =0.0;
   double _flow3 =0.0;
-  double _cycle =0.0;
+  // double _cycle =0.0;
   String _startTime = '00:00';
   String _stopTime = '00:00';
-
-  void addDataSet(String _name, String? _area, double _flow1, double _flow2, double _flow3, double _cycle,
-      String _startTime, String _stopTime, List<Map<String, dynamic>> DataSet) {
-    DataSet.add({
-      'name': _name,
-      'area': _area,
-      'concentration': {
-        'flow1': _flow1,
-        'flow2': _flow2,
-        'flow3': _flow3,
-      },
-      'cycle': _cycle,
-      'starttime': _startTime,
-      'stoptime': _stopTime,
-    });
-  }
 
   void _updateStartTime(String newTime) {
     setState(() {
@@ -49,6 +32,12 @@ class _CreateScreenState extends State<CreateScreen> {
       _stopTime = newTime;
     });
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   DataSet = _controller.getDataSet();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +158,10 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      addDataSet(_name, _area, _flow1, _flow2, _flow3, _cycle, _startTime, _stopTime, DataSet);
-                      DataSet.clear();
-                    },
+                      // _controller.addDataSet(_name, _area, _flow1, _flow2, _flow3, _cycle, _startTime, _stopTime);
+                      // DataSet.clear();
+                      // _controller.clearDataSet();
+                      },
                     child: Text.rich(
                         TextSpan(
                           text:"CREATE",
