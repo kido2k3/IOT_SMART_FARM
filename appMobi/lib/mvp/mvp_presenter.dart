@@ -1,6 +1,6 @@
 import 'mvp_view.dart';
 
-abstract class Presenter<T extends MvpView>{
+abstract class MvpPresenter<T extends MvpView>{
   late T view;
 
   void attachView(T view){

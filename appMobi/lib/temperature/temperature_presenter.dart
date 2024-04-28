@@ -3,14 +3,14 @@
 import 'dart:convert';
 
 import 'package:app_mobi/model/adafruit_server.dart';
-import 'package:app_mobi/mvp/presenter.dart';
+import 'package:app_mobi/mvp/mvp_presenter.dart';
 import 'package:app_mobi/temperature/temperature_view.dart';
 
 import '../model/network/http_help.dart';
 
 TemperaturePresenter temperaturePresenter = TemperaturePresenter();
 
-class TemperaturePresenter extends Presenter<TemperatureView>{
+class TemperaturePresenter extends MvpPresenter<TemperatureView>{
   void changeValue(double val){
     isViewAttached ? getView().updateData(val) : null;
   }
