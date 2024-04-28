@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:app_mobi/led/led_presenter.dart';
-import 'package:app_mobi/pump/pump_presenter.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import '../../light_intensity/light_intensity_presenter.dart';
-import '../../temperature/temperature_presenter.dart';
+
 
 class MqttHelp {
   final String hostName;
@@ -61,21 +58,6 @@ class MqttHelp {
         final recMess = c![0].payload as MqttPublishMessage;
         final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
         print('Received message: topic is ${c[0].topic}, payload is $pt');
-        if(c[0].topic.contains("iot-temperature")){
-          temperaturePresenter.changeValue(double.parse(pt));
-        }
-        else if(c[0].topic.contains("iot-pump")){
-          pumpPresenter.changeValue(pt);
-        }
-        else if(c[0].topic.contains("iot-led")){
-          ledPresenter.changeValue(pt);
-        }
-        else if(c[0].topic.contains("iot-brightness")){
-          lightIntensityPresenter.changeValue(double.parse(pt));
-        }
-        else if(c[0].topic.contains("iot-humidity")){
-          lightIntensityPresenter.changeValue(double.parse(pt));
-        }
       });
       for (var element in feeds) {
         _client.subscribe(element, MqttQos.atMostOnce);

@@ -4,12 +4,13 @@ import 'package:app_mobi/humidity/humidity_view.dart';
 
 import '../model/adafruit_server.dart';
 import '../model/network/http_help.dart';
-import '../mvp/presenter.dart';
+import '../mvp/mvp_presenter.dart';
 
 HumidityPresenter humidityPresenter = HumidityPresenter();
 
-class HumidityPresenter extends Presenter<HumidityView>{
+class HumidityPresenter extends MvpPresenter<HumidityView>{
   void changeValue(double val){
+    checkViewAttached();
     isViewAttached ? getView().updateData(val) : null;
   }
   Future<void> getValue() async {

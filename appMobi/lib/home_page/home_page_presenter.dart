@@ -1,9 +1,6 @@
-import 'dart:async';
-
-import '../model/network/http_help.dart';
-import '../mvp/presenter.dart';
+import '../mvp/mvp_presenter.dart';
 import 'home_page_view.dart';
 
-class HomePagePresenter extends Presenter<HomePageView> {
+class HomePagePresenter extends MvpPresenter<HomePageView> {
 
 }
