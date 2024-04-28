@@ -78,17 +78,18 @@ class Command:
 
 def my_fsm(state, mixer, area, command, count, os, flag):
     os.add_process(command.read_connection,0,0)
-    print(flag)
+    # print(flag)
     if state == ST_IDLE:
         state = ST_MIXER1
         os.add_process(command.turn_mixer_1_on)
+        print("state mixer1")
     elif state == ST_MIXER1:
-        print(command.data)
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 os.add_process(command.turn_mixer_1_on)
             if(count / 10 > 3):
                 print("time out1")
+                print("state mixer2")
                 os.add_process(command.turn_mixer_1_off)
                 os.add_process(command.turn_mixer_2_on)
                 count = 0
@@ -97,21 +98,21 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("mixer1 is running")
             if count >= (mixer[0]/SPEED)*10 :
                 os.add_process(command.turn_mixer_1_off)
                 os.add_process(command.turn_mixer_2_on)
                 count = 0
                 state = ST_MIXER2
                 command.flag = 0
+                print("state mixer2")
     elif state == ST_MIXER2:
-        print(command.data)
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 os.add_process(command.turn_mixer_1_off)
                 os.add_process(command.turn_mixer_2_on)
             if(count / 10 > 3):
                 print("time out2")
+                print("state mixer3")
                 os.add_process(command.turn_mixer_2_off)
                 os.add_process(command.turn_mixer_3_on)
                 count = 0
@@ -120,21 +121,21 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("mixer2 is running")
             if count >= (mixer[1]/SPEED)*10 :
                 os.add_process(command.turn_mixer_2_off)
                 os.add_process(command.turn_mixer_3_on)
                 count = 0
                 state = ST_MIXER3
                 command.flag = 0
+                print("state mixer3")
     elif state == ST_MIXER3:
-        print(command.data)
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 os.add_process(command.turn_mixer_2_off)
                 os.add_process(command.turn_mixer_3_on)
             if(count / 10 > 3):
                 print("time out3")
+                print("state pump in")
                 os.add_process(command.turn_mixer_3_off)
                 os.add_process(command.turn_in_pump_on)
                 count = 0
@@ -143,21 +144,21 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("mixer3 is running")
             if count >= (mixer[1]/SPEED)*10 :
                 os.add_process(command.turn_mixer_3_off)
                 os.add_process(command.turn_in_pump_on)
                 count = 0
                 state = ST_PUMP_IN
                 command.flag = 0
+                print("state pump in")
     elif state == ST_PUMP_IN:
-        print(command.data)
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 os.add_process(command.turn_mixer_3_off)
                 os.add_process(command.turn_in_pump_on)
             if(count / 10 > 3):
                 print("time out4")
+                print("state selector")
                 if(area == "1"):
                     os.add_process(command.select_area_1)
                 elif(area == "2"):
@@ -171,7 +172,6 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("pumping in")
             if count >= (20)*10 :
                 if(area == "1"):
                     os.add_process(command.select_area_1)
@@ -183,8 +183,9 @@ def my_fsm(state, mixer, area, command, count, os, flag):
                 count = 0
                 state = ST_SELECTOR
                 command.flag = 0
+                print("state selector")
     elif state == ST_SELECTOR:
-        print(command.data)
+        
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 if(area == "1"):
@@ -196,6 +197,7 @@ def my_fsm(state, mixer, area, command, count, os, flag):
                 os.add_process(command.turn_in_pump_off)
             if(count / 10 > 3):
                 print("time out5")
+                print("state pump out")
                 os.add_process(command.turn_out_pump_on)
                 count = 0
                 state = ST_PUMP_OUT
@@ -203,14 +205,13 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("selecting ")
-            if count >= 10 :
-                os.add_process(command.turn_out_pump_on)
-                count = 0
-                state = ST_PUMP_OUT
-                command.flag = 0
+            os.add_process(command.turn_out_pump_on)
+            count = 0
+            state = ST_PUMP_OUT
+            command.flag = 0
+            print("state pump out")
     elif state == ST_PUMP_OUT:
-        print(command.data)
+        
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
                 os.add_process(command.turn_out_pump_on)
@@ -229,7 +230,6 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            print("pumping out ")
             if count >= 20*10 :
                 if(area == "1"):
                     os.add_process(command.unselect_area_1)
