@@ -1,3 +1,4 @@
+import 'package:app_mobi/main_screen.dart';
 import 'package:app_mobi/model/network/mqtt_help.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const MainScreen(),
     );
   }
 }
