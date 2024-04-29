@@ -19,12 +19,15 @@ class HomePage extends StatelessWidget {
               child: WelcomeBox()
             ),
             Expanded(
-                flex: 75,
+                flex: 50,
                 child: TaskBox()
             ),
             Expanded(
                 flex: 15,
                 child: ToolBar()
+            ),
+            SizedBox(
+              height: 5,
             ),
           ],
         ),

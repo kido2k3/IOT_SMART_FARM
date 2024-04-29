@@ -35,7 +35,8 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
           Column(
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: _isConnected
+                      ? null : () {_presenter.newtaskOnPressed(context);},
                   icon: const Icon(Icons.add_circle_outline, size: 40)),
               Text('New task',
                   textAlign: TextAlign.center, style: MyTextStyle.weather),
@@ -44,7 +45,8 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
           Column(
             children: [
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.history, size: 40)),
+                  onPressed: () {},
+                  icon: const Icon(Icons.history, size: 40)),
               Text('Log',
                   textAlign: TextAlign.center, style: MyTextStyle.weather),
             ],

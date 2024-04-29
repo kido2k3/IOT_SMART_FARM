@@ -1,5 +1,3 @@
-
-
 import 'package:app_mobi/home_page/home_page.dart';
 import 'package:app_mobi/main.dart';
 import 'package:app_mobi/my_share/background.dart';
