@@ -26,7 +26,7 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
     return Container(
       width: 250,
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withOpacity(0.5),
           borderRadius: BorderRadius.circular(25)),
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       child: Row(
@@ -34,10 +34,12 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
         children: [
           Column(
             children: [
-              IconButton(
-                  onPressed: _isConnected
-                      ? null : () {_presenter.newtaskOnPressed(context);},
-                  icon: const Icon(Icons.add_circle_outline, size: 40)),
+              GestureDetector(
+                child: IconButton(
+                    onPressed: _isConnected
+                        ? null : () {_presenter.newtaskOnPressed(context);},
+                    icon: const Icon(Icons.add_circle_outline, size: 40)),
+              ),
               Text('New task',
                   textAlign: TextAlign.center, style: MyTextStyle.weather),
             ],

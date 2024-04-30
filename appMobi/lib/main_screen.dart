@@ -16,9 +16,24 @@ class MainScreen extends StatelessWidget{
         titleTextStyle: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 30
+          fontSize: 27,
+          fontFamily: 'Intel',
         ),
-        backgroundColor: Colors.green
+        backgroundColor: Colors.green,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+                colors: [
+                  Colors.greenAccent.withOpacity(0.7),
+                  Colors.lightBlueAccent.withOpacity(0.7),
+                ],
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+        ),
       ),
       body: const SafeArea(
         child: HomePage(),

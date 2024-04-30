@@ -27,8 +27,8 @@ class _WelcomeBoxState extends State<WelcomeBox> implements WelcomeBoxView {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(25)),
+          color: Colors.white.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(30)),
       margin:const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       padding:const EdgeInsets.all(10),
       child: Column(

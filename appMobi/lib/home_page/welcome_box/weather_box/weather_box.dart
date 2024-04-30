@@ -30,7 +30,7 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25)),
+          color: Colors.white.withOpacity(0.8999999761581421), borderRadius: BorderRadius.circular(25)),
       margin: const EdgeInsets.all(2),
       padding: const EdgeInsets.all(10),
       child: Column(
