@@ -1,3 +1,4 @@
+
 class Process:
     def __init__(self, func, delay, period) -> None:
         self.func = func
@@ -60,6 +61,9 @@ class OS:
         for process in self.wait_queue:
             string += (str(process) + '\n')
         return string
+
+
+operation_system = OS()
 
 # for testing
 # import time

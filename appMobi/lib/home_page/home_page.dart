@@ -1,3 +1,5 @@
+import 'package:app_mobi/home_page/task_box/task_box.dart';
+import 'package:app_mobi/home_page/tool_bar/tool_bar.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box.dart';
 import 'package:app_mobi/my_share/background.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
         Background(),
         Column(
@@ -17,12 +19,15 @@ class HomePage extends StatelessWidget {
               child: WelcomeBox()
             ),
             Expanded(
-                flex: 80,
-                child: Text("data")
+                flex: 50,
+                child: TaskBox()
             ),
             Expanded(
-                flex: 10,
-                child: Text("data")
+                flex: 15,
+                child: ToolBar()
+            ),
+            SizedBox(
+              height: 5,
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+from my_parameters import crc_lists
+
 class CRC_MOD_BUS:
     crc_lists = dict()
 
@@ -26,7 +28,7 @@ class CRC_MOD_BUS:
         crc_format = self.crc_lists[name] + crc_check
         return crc_format
 
-
+crc_calc = CRC_MOD_BUS(crc_lists)
 # for testing   
 # from my_parameters import crc_lists
 # crc_calc = CRC_MOD_BUS(crc_lists)

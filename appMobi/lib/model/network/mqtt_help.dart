@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
+import '../../home_page/tool_bar/tool_bar_presenter.dart';
+
 
 
 class MqttHelp {
   final String hostName;
   final String clientID;
-  final String userName;
-  final String password;
+  late String userName;
+  late String password;
   var feeds;
   late MqttServerClient _client;
   MqttHelp({
@@ -19,7 +21,6 @@ class MqttHelp {
     this.password = "",
     this.clientID = ""}) {
     _client = MqttServerClient(hostName, clientID);
-    //_client.setProtocolV31();
     _client.setProtocolV311();
     _client.pongCallback = pong;
     _client.onConnected = onConnected;
@@ -42,6 +43,9 @@ class MqttHelp {
     print("publish");
     _client.publishMessage(pubTopic, MqttQos.atMostOnce, builder.payload!,
         retain: true);
+  }
+  bool isConnected(){
+    return _client.connectionStatus!.state == MqttConnectionState.connected;
   }
   Future<void> connect() async {
     try {
@@ -71,6 +75,8 @@ class MqttHelp {
   /// The unsolicited disconnect callback
   void onDisconnected() {
     print('Client disconnection');
+    print(_client.connectionStatus!.state == MqttConnectionState.connected);
+    toolBarPresenter.getStatus();
   }
 
   /// The subscribed callback
@@ -80,6 +86,7 @@ class MqttHelp {
 
   void onConnected() {
     print('Client connection was successful');
+    toolBarPresenter.getStatus();
   }
 
   /// Pong callback

@@ -13,11 +13,6 @@ class AdafruitServer {
       userName: "kido2k3",
       password: "insert here",
       feeds: [
-        'kido2k3/feeds/iot-led',
-        'kido2k3/feeds/iot-pump',
-        'kido2k3/feeds/iot-brightness',
-        'kido2k3/feeds/iot-temperature',
-        'kido2k3/feeds/iot-humidity',
       ]);
 
   // SharedPrefsHelper sharedPrefsHelper=new SharedPrefsHelper();
@@ -25,6 +20,8 @@ class AdafruitServer {
   factory AdafruitServer() {
     return _adafruitServer;
   }
-
+  bool isConnected(){
+    return mqttHelp.isConnected();
+  }
   AdafruitServer._internal();
 }

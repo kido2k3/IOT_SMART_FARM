@@ -8,7 +8,6 @@ class Background extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final Widget? child;
     // TODO: implement build
     return Stack(
       children: [

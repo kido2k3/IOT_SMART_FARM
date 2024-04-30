@@ -159,19 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               SizedBox(height: 20,),
                               Positioned(
-                                left: 88,
-                                top: 213,
+                                  left: 88,
+                                  top: 213,
                                 child: Text(
-                                  '30.254',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0,
-                                    letterSpacing: -0.24,
-                                  ),
+                                  '11'
                                 ),
                               ),
                             ],

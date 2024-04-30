@@ -53,8 +53,8 @@ class UART:
                 return -1
         return -2
         
-
-# for testing
+serialUART = UART()
+# # for testing
 # temp = UART()
 # while True:
 #     # temp.ser.write("hahahhaha".encode())

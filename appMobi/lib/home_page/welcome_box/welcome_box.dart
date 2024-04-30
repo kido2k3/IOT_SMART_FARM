@@ -1,6 +1,7 @@
 import 'package:app_mobi/home_page/welcome_box/weather_box/weather_box.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box_presenter.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box_view.dart';
+import 'package:app_mobi/my_share/my_text_style.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeBox extends StatefulWidget {
@@ -28,9 +29,8 @@ class _WelcomeBoxState extends State<WelcomeBox> implements WelcomeBoxView {
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(25)),
-      margin:const EdgeInsets.all(15),
+      margin:const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       padding:const EdgeInsets.all(10),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -38,18 +38,11 @@ class _WelcomeBoxState extends State<WelcomeBox> implements WelcomeBoxView {
             flex: 1,
             child: Text(
                 "Welcome $_name",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                  height: 0,
-                  letterSpacing: -0.24,
-                ),
+                style: MyTextStyle.welcome,
                 textAlign: TextAlign.left,
             )
           ),
-          Expanded(
+          const Expanded(
               flex: 3,
               child: WeatherBox()
           )
