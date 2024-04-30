@@ -76,7 +76,7 @@ class Command:
     def turn_out_pump_off(self):
         self.glob_connect.ser.write(self.crc_calc.export("PUMP_OUT_OFF"))
 
-def my_fsm(state, mixer, area, command, count, os, flag):
+def my_fsm(state, task, command, count, os):
     os.add_process(command.read_connection,0,0)
     # print(flag)
     if state == ST_IDLE:
@@ -98,7 +98,7 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (mixer[0]/SPEED)*10 :
+            if count >= (task.mixer[0]/SPEED)*10 :
                 os.add_process(command.turn_mixer_1_off)
                 os.add_process(command.turn_mixer_2_on)
                 count = 0
@@ -121,7 +121,7 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (mixer[1]/SPEED)*10 :
+            if count >= (task.mixer[1]/SPEED)*10 :
                 os.add_process(command.turn_mixer_2_off)
                 os.add_process(command.turn_mixer_3_on)
                 count = 0
@@ -144,7 +144,7 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (mixer[1]/SPEED)*10 :
+            if count >= (task.mixer[1]/SPEED)*10 :
                 os.add_process(command.turn_mixer_3_off)
                 os.add_process(command.turn_in_pump_on)
                 count = 0
@@ -159,11 +159,11 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             if(count / 10 > 3):
                 print("time out4")
                 print("state selector")
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.select_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.select_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.select_area_3)
                 os.add_process(command.turn_in_pump_off)
                 count = 0
@@ -173,11 +173,11 @@ def my_fsm(state, mixer, area, command, count, os, flag):
             command.count = 0
         else:
             if count >= (20)*10 :
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.select_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.select_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.select_area_3)
                 os.add_process(command.turn_in_pump_off)
                 count = 0
@@ -188,11 +188,11 @@ def my_fsm(state, mixer, area, command, count, os, flag):
         
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.select_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.select_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.select_area_3)
                 os.add_process(command.turn_in_pump_off)
             if(count / 10 > 3):
@@ -217,73 +217,77 @@ def my_fsm(state, mixer, area, command, count, os, flag):
                 os.add_process(command.turn_out_pump_on)
             if(count / 10 > 3):
                 print("time out6")
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.unselect_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.unselect_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.unselect_area_3)
                 os.add_process(command.turn_out_pump_off)
                 count = 0
                 state = ST_END_STATE
+                task.cycle_num -= 1
         elif(command.data != -2):
             command.flag = 1
             command.count = 0
         else:
             if count >= 20*10 :
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.unselect_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.unselect_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.unselect_area_3)
                 os.add_process(command.turn_out_pump_off)
                 count = 0
                 state = ST_END_STATE
                 command.flag = 0
+                task.cycle_num -= 1
     elif state == ST_END_STATE:
         if(command.data == -2 and command.flag == 0):
             if(count % 10 == 0):
-                if(area == "1"):
+                if(task.area == "1"):
                     os.add_process(command.unselect_area_1)
-                elif(area == "2"):
+                elif(task.area == "2"):
                     os.add_process(command.unselect_area_2)
-                elif(area == "3"):
+                elif(task.area == "3"):
                     os.add_process(command.unselect_area_3)
                 os.add_process(command.turn_out_pump_off)
             if(count / 10 > 3):
                 print("time out7")
                 state = ST_IDLE
                 count = 0
-                flag = False
+                task.flag = DONE
         elif(command.data != -2):
             state = ST_IDLE
-            flag = False
+            task.flag = DONE
             count = 0
             pass
     count += 1
-    return state, mixer, area, command, count, os, flag
+    return state, task ,command, count, os
 
 
 class FSM:
-    def __init__(self, fsm, mixer, area, flag = True, command=None, count=0, os=None) -> None:
+    def __init__(self, fsm, task, command=None, count=0, os=None) -> None:
         self.state = ST_IDLE
         self.count = count
         self.fsm = fsm
-        self.mixer = mixer
-        self.area = area
+        self.task = task
         self.command = Command()
         self.os = OS()
-        self.flag = flag
+        # self.flag = flag
 
     def run_fsm(self):
-        self.state, self.mixer, self.area, self.command, self.count, self.os, self.flag = self.fsm(self.state, self.mixer, self.area, self.command, self.count, self.os, self.flag)
+        self.state, self.task, self.command, self.count, self.os= self.fsm(self.state, self.task, self.command, self.count, self.os)
     
     def add(self):
         self.os.add_process(self.run_fsm,0,1)
     
+    def remove(self):
+        self.os.remove_process(self.run_fsm)
+    
     def check(self):
-        if self.flag == False:
+        if self.task.flag == DONE:
             self.os.remove_process(self.run_fsm)
 
 # for testing
