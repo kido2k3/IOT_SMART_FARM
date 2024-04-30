@@ -30,8 +30,8 @@ class UART:
             if "USB" in strPort:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
-        return commPort
-        # return "COM5"
+        # return commPort
+        return "COM5"
 
     def ProcessData(self, data):
         pass
@@ -53,9 +53,11 @@ class UART:
                 return -1
         return -2
         
-
+serialUART = UART()
 # # for testing
 # temp = UART()
 # while True:
-#     temp.ReadSerial()
-#     time.sleep(0.01)
+#     # temp.ser.write("hahahhaha".encode())
+#     # temp.ReadSerial()
+#     print(1)
+#     time.sleep(1)

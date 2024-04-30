@@ -1,3 +1,5 @@
+from my_parameters import crc_lists
+
 class CRC_MOD_BUS:
     crc_lists = dict()
 
@@ -26,9 +28,9 @@ class CRC_MOD_BUS:
         crc_format = self.crc_lists[name] + crc_check
         return crc_format
 
-
-# for testing   
-from my_parameters import crc_lists
 crc_calc = CRC_MOD_BUS(crc_lists)
-print(crc_calc.export("MIXER1_ON"))
+# for testing   
+# from my_parameters import crc_lists
+# crc_calc = CRC_MOD_BUS(crc_lists)
+# print(crc_calc.export("MIXER1_ON"))
 
