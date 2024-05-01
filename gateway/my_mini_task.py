@@ -56,7 +56,7 @@ class miniTaskList:
                 print("Task cycle: ", self.mini_task_list[0].cycle_num)
                 if self.mini_task_list[0].cycle_num == 0:
                     self.mini_task_list.popleft()
-                else:
+                elif self.mini_task_list[0].cycle_num != 0:
                     self.mini_task_list[0].status = WAITING
                     self.mini_task_list.rotate(-1)
         else:
