@@ -2,6 +2,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app_mobi/home_page/task_box/task_box.dart';
+import 'package:app_mobi/home_page/task_box/task_box_presenter.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,10 @@ import '../../model/adafruit_server.dart';
 import '../../mvp/mvp_presenter.dart';
 
 ToolBarPresenter toolBarPresenter = ToolBarPresenter();
-class ToolBarPresenter extends MvpPresenter<ToolBarView>{
+
+class ToolBarPresenter extends MvpPresenter<ToolBarView> {
+  List<Map<String, dynamic>> DataSet = [];
+
   TextEditingController _userController = TextEditingController();
   TextEditingController _keyController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -23,6 +28,9 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView>{
   TextEditingController _cycleController = TextEditingController();
   TextEditingController _starttimeController = TextEditingController();
   TextEditingController _stoptimeController = TextEditingController();
+
+  TimeOfDay starttime = TimeOfDay.now();
+  TimeOfDay stoptime = TimeOfDay.now();
 
   void getStatus(){
     checkViewAttached();
@@ -42,9 +50,12 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView>{
     _stoptimeController.text = s;
   }
 
-  TimeOfDay starttime = TimeOfDay.now();
-
-  TimeOfDay stoptime = TimeOfDay.now();
+   void AddADataSet (Map<String, dynamic> newDataSet) {
+      DataSet.add(newDataSet);
+  }
+  void ClearAllDataSet () {
+      DataSet.clear();
+  }
 
   Future newtaskOnPressed(BuildContext context) async {
     showDialog(
@@ -69,12 +80,8 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView>{
                   border: Border.all(color: Colors.black),
                 ),
                 child: TextButton(
-                  onPressed: () {
-                    CreateNewTask(context);
-                  },
-                  child: const Text("Create",
-                      style: TextStyle(color: Colors.black, fontSize: 20)),
-                ),
+                  onPressed: () {CreateNewTask(context);},
+                  child: const Text("Create", style: TextStyle(color: Colors.black, fontSize: 20)),),
               ),
             ],
           ),
@@ -308,42 +315,72 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView>{
     _keyController.clear();
   }
 
-  Future CreateNewTask(BuildContext context)async {
+  Future CreateNewTask(BuildContext context) async {
     if (_nameController.text.isEmpty || _areaController.text.isEmpty ||
-        _flow1Controller.text.isEmpty || _flow2Controller.text.isEmpty || _flow3Controller.text.isEmpty ||
-        _cycleController.text.isEmpty || _starttimeController.text.isEmpty || _stoptimeController.text.isEmpty)
-    {
+        _flow1Controller.text.isEmpty || _flow2Controller.text.isEmpty ||
+        _flow3Controller.text.isEmpty ||
+        _cycleController.text.isEmpty || _starttimeController.text.isEmpty ||
+        _stoptimeController.text.isEmpty) {
       showDialog(
-          context: context,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Row(
-                children: [
-                  Icon(Icons.error_outlined, size: 30,color: Colors.red,),
-                  SizedBox(width: 20),
-                  Text("ERROR", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
-                ],
-              ),
-              content: Text("Please fill in all fields!", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-              actions: [
-                TextButton(
-                    onPressed: () {Navigator.pop(context);},
-                    child: Text("OK", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
-                ),
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.error_outlined, size: 30, color: Colors.red,),
+                SizedBox(width: 20),
+                Text("ERROR", textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.red),),
               ],
-            );
-          },
+            ),
+            content: Text(
+              "Please fill in all fields!", style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK", style: TextStyle(color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),),
+              ),
+            ],
+          );
+        },
       );
     }
     else {
+      Map<String, dynamic> newDataSet = {
+        'Name': '${_nameController.text.toString()}',
+        'Area': '${_areaController.text.toString()}',
+        'Concentration of 1st fertilizer': '${_flow1Controller.text
+            .toString()}',
+        'Concentration of 2nd fertilizer': '${_flow2Controller.text
+            .toString()}',
+        'Concentration of 3rd fertilizer': '${_flow3Controller.text
+            .toString()}',
+        'Cycle': '${_cycleController.text.toString()}',
+        'Start Time': '${_starttimeController.text.toString()}',
+        'Stop Time': '${_stoptimeController.text.toString()}',
+      };
+        AddADataSet(newDataSet);
+      if (DataSet.length >= 3) {
+        ClearAllDataSet();
+      }
       Navigator.pop(context);
-      _nameController.text = ""; _areaController.text = "";
-      _flow1Controller.text = ""; _flow2Controller.text = ""; _flow3Controller.text = "";
-      _cycleController.text = ""; _starttimeController.text = ""; _stoptimeController.text = "";
+      _nameController.text = "";
+      _areaController.text = "";
+      _flow1Controller.text = "";
+      _flow2Controller.text = "";
+      _flow3Controller.text = "";
+      _cycleController.text = "";
+      _starttimeController.text = "";
+      _stoptimeController.text = "";
       starttime = TimeOfDay(hour: 0, minute: 0);
       stoptime = TimeOfDay(hour: 0, minute: 0);
     }
-
   }
 
   Future<TimeOfDay?> showCustomTimePicker({

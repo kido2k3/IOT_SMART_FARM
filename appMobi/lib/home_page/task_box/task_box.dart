@@ -1,6 +1,11 @@
-
+import 'package:app_mobi/home_page/task_box/data_set_box/data_set_box.dart';
 import 'package:app_mobi/my_share/my_text_style.dart';
+import 'package:app_mobi/home_page/task_box/task_box_view.dart';
+import 'package:app_mobi/home_page/tool_bar/tool_bar_presenter.dart';
+import 'package:app_mobi/home_page/tool_bar/tool_bar_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class TaskBox extends StatefulWidget {
   const TaskBox({super.key});
@@ -17,16 +22,26 @@ class _TaskBoxState extends State<TaskBox> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(30)),
-      margin:const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-      padding:const EdgeInsets.all(10),
+        color: Colors.white.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Task lists", style: MyTextStyle.welcome),
-          Text("Running...", style: MyTextStyle.weather),
-          Text("Waiting...", style: MyTextStyle.weather),
+          Container(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Text("\t Task Manager", style: MyTextStyle.welcome),
+            ),
+          ),
+          Container(
+            child: Expanded(
+              child: DataSetBox(),
+            ),
+          ),
         ],
       ),
     );
