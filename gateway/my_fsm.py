@@ -1,4 +1,4 @@
-from my_parameters import *
+import my_parameters
 from my_os import operation_system
 from my_serial import serialUART
 from my_crc import crc_calc
@@ -77,15 +77,13 @@ class Command:
 command = Command()
 
 def my_fsm(state, task, command, count, flag):
-    global operation_system, status
-
     operation_system.add_process(command.read_connection, 0, 0)
     # print(flag)
-    if state == ST_IDLE:
-        state = ST_MIXER1
+    if state == my_parameters.ST_IDLE:
+        state = my_parameters.ST_MIXER1
         operation_system.add_process(command.turn_mixer_1_on)
         print("state mixer1: ", task.mixer[0])
-    elif state == ST_MIXER1:
+    elif state == my_parameters.ST_MIXER1:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 operation_system.add_process(command.turn_mixer_1_on)
@@ -95,19 +93,19 @@ def my_fsm(state, task, command, count, flag):
                 operation_system.add_process(command.turn_mixer_1_off)
                 operation_system.add_process(command.turn_mixer_2_on)
                 count = 0
-                state = ST_MIXER2
+                state = my_parameters.ST_MIXER2
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (task.mixer[0]/SPEED)*10:
+            if count >= (task.mixer[0]/my_parameters.SPEED)*10:
                 operation_system.add_process(command.turn_mixer_1_off)
                 operation_system.add_process(command.turn_mixer_2_on)
                 count = 0
-                state = ST_MIXER2
+                state = my_parameters.ST_MIXER2
                 command.flag = 0
                 print("state mixer2: ", task.mixer[1])
-    elif state == ST_MIXER2:
+    elif state == my_parameters.ST_MIXER2:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 operation_system.add_process(command.turn_mixer_1_off)
@@ -118,19 +116,19 @@ def my_fsm(state, task, command, count, flag):
                 operation_system.add_process(command.turn_mixer_2_off)
                 operation_system.add_process(command.turn_mixer_3_on)
                 count = 0
-                state = ST_MIXER3
+                state = my_parameters.ST_MIXER3
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (task.mixer[1]/SPEED)*10:
+            if count >= (task.mixer[1]/my_parameters.SPEED)*10:
                 operation_system.add_process(command.turn_mixer_2_off)
                 operation_system.add_process(command.turn_mixer_3_on)
                 count = 0
-                state = ST_MIXER3
+                state = my_parameters.ST_MIXER3
                 command.flag = 0
                 print("state mixer3: ", task.mixer[2])
-    elif state == ST_MIXER3:
+    elif state == my_parameters.ST_MIXER3:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 operation_system.add_process(command.turn_mixer_2_off)
@@ -141,19 +139,19 @@ def my_fsm(state, task, command, count, flag):
                 operation_system.add_process(command.turn_mixer_3_off)
                 operation_system.add_process(command.turn_in_pump_on)
                 count = 0
-                state = ST_PUMP_IN
+                state = my_parameters.ST_PUMP_IN
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
         else:
-            if count >= (task.mixer[1]/SPEED)*10:
+            if count >= (task.mixer[1]/my_parameters.SPEED)*10:
                 operation_system.add_process(command.turn_mixer_3_off)
                 operation_system.add_process(command.turn_in_pump_on)
                 count = 0
-                state = ST_PUMP_IN
+                state = my_parameters.ST_PUMP_IN
                 command.flag = 0
                 print("state pump in")
-    elif state == ST_PUMP_IN:
+    elif state == my_parameters.ST_PUMP_IN:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 operation_system.add_process(command.turn_mixer_3_off)
@@ -169,7 +167,7 @@ def my_fsm(state, task, command, count, flag):
                     operation_system.add_process(command.select_area_3)
                 operation_system.add_process(command.turn_in_pump_off)
                 count = 0
-                state = ST_SELECTOR
+                state = my_parameters.ST_SELECTOR
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
@@ -183,11 +181,10 @@ def my_fsm(state, task, command, count, flag):
                     operation_system.add_process(command.select_area_3)
                 operation_system.add_process(command.turn_in_pump_off)
                 count = 0
-                state = ST_SELECTOR
+                state = my_parameters.ST_SELECTOR
                 command.flag = 0
                 print("state selector")
-    elif state == ST_SELECTOR:
-
+    elif state == my_parameters.ST_SELECTOR:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 if (task.area == "1"):
@@ -202,17 +199,17 @@ def my_fsm(state, task, command, count, flag):
                 print("state pump out")
                 operation_system.add_process(command.turn_out_pump_on)
                 count = 0
-                state = ST_PUMP_OUT
+                state = my_parameters.ST_PUMP_OUT
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
         else:
             operation_system.add_process(command.turn_out_pump_on)
             count = 0
-            state = ST_PUMP_OUT
+            state = my_parameters.ST_PUMP_OUT
             command.flag = 0
             print("state pump out")
-    elif state == ST_PUMP_OUT:
+    elif state == my_parameters.ST_PUMP_OUT:
 
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
@@ -227,7 +224,7 @@ def my_fsm(state, task, command, count, flag):
                     operation_system.add_process(command.unselect_area_3)
                 operation_system.add_process(command.turn_out_pump_off)
                 count = 0
-                state = ST_END_STATE
+                state = my_parameters.ST_END_STATE
         elif (command.data != -2):
             command.flag = 1
             command.count = 0
@@ -241,10 +238,10 @@ def my_fsm(state, task, command, count, flag):
                     operation_system.add_process(command.unselect_area_3)
                 operation_system.add_process(command.turn_out_pump_off)
                 count = 0
-                state = ST_END_STATE
+                state = my_parameters.ST_END_STATE
                 command.flag = 0
                 task.cycle_num -= 1
-    elif state == ST_END_STATE:
+    elif state == my_parameters.ST_END_STATE:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 if (task.area == "1"):
@@ -256,25 +253,25 @@ def my_fsm(state, task, command, count, flag):
                 operation_system.add_process(command.turn_out_pump_off)
             if (count / 10 > 3):
                 print("time out7")
-                state = ST_IDLE
-                status = DONE
+                state = my_parameters.ST_IDLE
+                my_parameters.status = my_parameters.DONE
                 task.cycle_num -= 1
                 count = 0
                 flag = False
-                print(status)
+                print(my_parameters.status)
         elif (command.data != -2):
-            state = ST_IDLE
-            status = DONE
+            state = my_parameters.ST_IDLE
+            my_parameters.status = my_parameters.DONE
             task.cycle_num -= 1
             count = 0
-    print("in FSM",status)
+    print("in FSM",my_parameters.status)
     count += 1
     return state, task, command, count, flag
 
 
 class FSM:
     def __init__(self, fsm, task, command, flag=True, count=0) -> None:
-        self.state = ST_IDLE
+        self.state = my_parameters.ST_IDLE
         self.count = count
         self.fsm = fsm
         self.task = task
@@ -283,12 +280,11 @@ class FSM:
         # self.status = status
 
     def run_fsm(self):
-        global status
         self.state, self.task, self.command, self.count, self.flag = self.fsm(
             self.state, self.task, self.command, self.count, self.flag)
 
     def add(self):
-        global operation_system, status
+        global operation_system
         operation_system.add_process(self.run_fsm, 0, 1)
 
     def rmv(self):

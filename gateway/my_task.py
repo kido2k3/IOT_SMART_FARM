@@ -1,4 +1,5 @@
-from my_parameters import *
+from my_parameters import WAITING, RUNNING, DONE
+import my_parameters
 from datetime import datetime
 from my_fsm import *
 from my_os import operation_system
@@ -66,21 +67,21 @@ def check_running_task():
 # check running list is empty or not.
 # If running list is not empty, run task index = 0, decrease cycle, remove and
 # re-add that task if cycle is not equal 0
-    global running, status, command, operation_system
+    global running, command, operation_system
     # print(status)
     if not running.is_empty():
-        if status == WAITING:
-            status = RUNNING
+        if my_parameters.status == WAITING:
+            my_parameters.status = RUNNING
             fsm = FSM(my_fsm, running.task_list[0], command)
             operation_system.add_process(fsm.run_fsm,0,1)
-        elif status == DONE:
+        elif my_parameters.status == DONE:
             operation_system.add_process(fsm.rmv)
             if running.task_list[0].cycle_num == 0:
                 running.task_list.pop()
             elif running.task_list[0].cycle_num != 0:
                 running.task_list.append(running.task_list.pop())
-            status = WAITING
-        print("in check running",status)
+            my_parameters.status = WAITING
+        print("in check running",my_parameters.status)
 
 
 # for testing
