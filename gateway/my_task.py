@@ -2,7 +2,8 @@ from my_parameters import WAITING, RUNNING, DONE
 import my_parameters
 from datetime import datetime
 from my_fsm import *
-from my_os import operation_system
+# from my_os import operation_system
+import my_os
 
 class Task:
     def __init__(self, id: str, cycle_num: int, mixer: list, area: str, start_time: str) -> None:
@@ -47,7 +48,6 @@ class Task_List:
 
 waiting = Task_List()
 running = Task_List()
-# status = WAITING
 
 def check_waiting_task():
     # check the time of tasks in waiting list
@@ -63,25 +63,28 @@ def check_waiting_task():
                 running.add(task)
                 waiting.task_list.remove(task)
 
+fsm = None
+
 def check_running_task():
 # check running list is empty or not.
 # If running list is not empty, run task index = 0, decrease cycle, remove and
 # re-add that task if cycle is not equal 0
-    global running, command, operation_system
+    global running, command, fsm
     # print(status)
-    if not running.is_empty():
+    if running.is_empty() == False:
         if my_parameters.status == WAITING:
-            my_parameters.status = RUNNING
             fsm = FSM(my_fsm, running.task_list[0], command)
-            operation_system.add_process(fsm.run_fsm,0,1)
+            my_parameters.status = RUNNING
+            my_os.operation_system.add_process(fsm.run_fsm,0,1)
         elif my_parameters.status == DONE:
-            operation_system.add_process(fsm.rmv)
+            my_os.operation_system.add_process(fsm.rmv)
+            fsm = None
             if running.task_list[0].cycle_num == 0:
-                running.task_list.pop()
+                running.task_list.pop(0)
             elif running.task_list[0].cycle_num != 0:
-                running.task_list.append(running.task_list.pop())
+                running.task_list.append(running.task_list.pop(0))
             my_parameters.status = WAITING
-        print("in check running",my_parameters.status)
+        # print("in check running",my_parameters.status)
 
 
 # for testing
