@@ -38,7 +38,9 @@ ST_SELECTOR = 5
 ST_PUMP_OUT = 6
 ST_END_STATE = 7
 
-#for miniTask
+#for Task
 WAITING = 0
 RUNNING = 1
 DONE = 2
+
+status = WAITING

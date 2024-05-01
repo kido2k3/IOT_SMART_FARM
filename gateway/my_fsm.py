@@ -3,7 +3,6 @@ from my_os import operation_system
 from my_serial import serialUART
 from my_crc import crc_calc
 
-
 class Command:
     def __init__(self, data=0, flag=0):
         self.data = data
@@ -78,7 +77,7 @@ class Command:
 command = Command()
 
 def my_fsm(state, task, command, count, flag):
-    global operation_system
+    global operation_system, status
 
     operation_system.add_process(command.read_connection, 0, 0)
     # print(flag)
@@ -258,16 +257,17 @@ def my_fsm(state, task, command, count, flag):
             if (count / 10 > 3):
                 print("time out7")
                 state = ST_IDLE
-                task.status = DONE
+                status = DONE
                 task.cycle_num -= 1
                 count = 0
                 flag = False
+                print(status)
         elif (command.data != -2):
             state = ST_IDLE
-            task.status = DONE
+            status = DONE
             task.cycle_num -= 1
             count = 0
-            pass
+    print("in FSM",status)
     count += 1
     return state, task, command, count, flag
 
@@ -280,13 +280,15 @@ class FSM:
         self.task = task
         self.command = command
         self.flag = flag
+        # self.status = status
 
     def run_fsm(self):
+        global status
         self.state, self.task, self.command, self.count, self.flag = self.fsm(
             self.state, self.task, self.command, self.count, self.flag)
 
     def add(self):
-        global operation_system
+        global operation_system, status
         operation_system.add_process(self.run_fsm, 0, 1)
 
     def rmv(self):
