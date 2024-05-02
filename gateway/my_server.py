@@ -14,6 +14,8 @@ class Server:
     received = False
     # The callback for when the client receives a CONN_ACK response from the server.
 
+    def published(self, client, userdata, mid):
+        print("published successfully mid: ", mid)
     def connected(self, client, user_data, flags, rc):
         # Connected function will be called when the client is connected to server
         if (rc == 0):
@@ -57,6 +59,7 @@ class Server:
         self.client.on_connect = self.connected
         self.client.on_message = self.message
         self.client.on_subscribe = self.subscribed
+        self.client.on_publish = self.published
         self.client.connect(host=self.AIO_HOST, port=1883, keepalive=60)
 
         self.client.loop_start()
@@ -64,13 +67,23 @@ class Server:
 
 
 # for testing
-# import random
-# import time
-# temp = Server(["phong", "phong2"], "mqtt.ohstem.vn","kido2k3","")
-# time.sleep(2)
-# while True:
-#     value = random.randint(0, 100)
-#     print(f'Publishing {value}.')
-#     temp.client.publish(temp.AIO_FEEDS["phong"], value)
-#     temp.client.publish(temp.AIO_FEEDS["kido"], value + 1)
-#     time.sleep(2)
+import time
+import json
+temp = Server([], "io.adafruit.com","kido2k3","aio_Npjc80KNOWkXyy5wRoVQpM5mSTmq")
+time.sleep(2)
+x = { "value": 22.587,
+    "lat": 38.1123,
+    "lon": -91.2325,
+    "ele": 112}
+y = json.dumps(x)
+temp.client.publish("kido2k3/feeds/iot-gateway",y)
+time.sleep(2)
+x = { "value": 40,
+    "lat": 38.1123,
+    "lon": -91.2325,
+    "ele": 112}
+y = json.dumps(x)
+temp.client.publish("kido2k3/feeds/iot-gateway",y)
+print("sent")
+while True:
+    pass
