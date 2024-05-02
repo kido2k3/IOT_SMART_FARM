@@ -83,6 +83,7 @@ def my_fsm(state, task, command, count, flag):
         state = my_parameters.ST_MIXER1
         my_os.operation_system.add_process(command.turn_mixer_1_on)
         print("state mixer1: ", task.mixer[0])
+        print("task :", task.id)
     elif state == my_parameters.ST_MIXER1:
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
@@ -253,18 +254,19 @@ def my_fsm(state, task, command, count, flag):
                 my_os.operation_system.add_process(command.turn_out_pump_off)
             if (count / 10 > 3):
                 print("time out7")
-                state = my_parameters.ST_IDLE
+                # state = my_parameters.ST_IDLE
                 my_parameters.status = my_parameters.DONE
                 task.cycle_num -= 1
                 count = 0
                 flag = False
-                print(my_parameters.status)
+                # print(my_parameters.status)
         elif (command.data != -2):
             # state = my_parameters.ST_IDLE
             my_parameters.status = my_parameters.DONE
             task.cycle_num -= 1
             count = 0
     # print("in FSM",my_parameters.status)
+    
     count += 1
     return state, task, command, count, flag
 
