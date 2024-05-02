@@ -77,7 +77,7 @@ def check_running_task():
             my_parameters.status = RUNNING
             my_os.operation_system.add_process(fsm.run_fsm,0,1)
         elif my_parameters.status == DONE:
-            my_os.operation_system.add_process(fsm.rmv)
+            my_os.operation_system.remove_process(fsm.run_fsm)
             fsm = None
             if running.task_list[0].cycle_num == 0:
                 running.task_list.pop(0)
