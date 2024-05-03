@@ -1,4 +1,3 @@
-import 'package:app_mobi/home_page/task_box/task_box.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar_presenter.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar_view.dart';
 import 'package:app_mobi/my_share/my_text_style.dart';
@@ -37,8 +36,7 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
             children: [
               GestureDetector(
                 child: IconButton(
-                    onPressed: _isConnected
-                        ? null : () {_presenter.newtaskOnPressed(context);},
+                    onPressed: !_isConnected ? null : () {_presenter.newtaskOnPressed(context);},
                     icon: const Icon(Icons.add_circle_outline, size: 40)),
               ),
               Text('New task',
@@ -48,7 +46,7 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
           Column(
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {_presenter.newtaskOnPressed(context);},
                   icon: const Icon(Icons.history, size: 40)),
               Text('Log',
                   textAlign: TextAlign.center, style: MyTextStyle.weather),

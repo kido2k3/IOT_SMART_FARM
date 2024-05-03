@@ -14,6 +14,9 @@ class HomePage extends StatelessWidget {
         Background(),
         Column(
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Expanded(
               flex: 30,
               child: WelcomeBox()
@@ -27,7 +30,7 @@ class HomePage extends StatelessWidget {
                 child: ToolBar()
             ),
             SizedBox(
-              height: 5,
+              height: 10,
             ),
           ],
         ),

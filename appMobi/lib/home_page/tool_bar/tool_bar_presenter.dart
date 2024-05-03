@@ -1,7 +1,9 @@
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:app_mobi/home_page/home_page.dart';
+import 'package:app_mobi/my_share/user.dart';
 import 'package:app_mobi/home_page/task_box/task_box.dart';
 import 'package:app_mobi/home_page/task_box/task_box_presenter.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar_view.dart';
@@ -9,28 +11,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:mqtt_client/mqtt_client.dart';
 import '../../model/adafruit_server.dart';
+import '../../model/network/mqtt_help.dart';
 import '../../mvp/mvp_presenter.dart';
 
 ToolBarPresenter toolBarPresenter = ToolBarPresenter();
 
 class ToolBarPresenter extends MvpPresenter<ToolBarView> {
+  Map<String, dynamic> userMap = {};
   List<Map<String, dynamic>> DataSet = [];
+  AdafruitServer adafruitServer = AdafruitServer();
+  int id = 1;
 
   TextEditingController _userController = TextEditingController();
   TextEditingController _keyController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _flow1Controller = TextEditingController();
-  TextEditingController _flow2Controller = TextEditingController();
-  TextEditingController _flow3Controller = TextEditingController();
+  TextEditingController _mixer1Controller = TextEditingController();
+  TextEditingController _mixer2Controller = TextEditingController();
+  TextEditingController _mixer3Controller = TextEditingController();
   TextEditingController _areaController = TextEditingController();
   TextEditingController _cycleController = TextEditingController();
   TextEditingController _starttimeController = TextEditingController();
-  TextEditingController _stoptimeController = TextEditingController();
 
   TimeOfDay starttime = TimeOfDay.now();
-  TimeOfDay stoptime = TimeOfDay.now();
 
   void getStatus(){
     checkViewAttached();
@@ -46,15 +50,17 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
     _starttimeController.text = s;
   }
 
-  void updateStopTimeController (String s) {
-    _stoptimeController.text = s;
-  }
-
    void AddADataSet (Map<String, dynamic> newDataSet) {
       DataSet.add(newDataSet);
-  }
+      id += 1;
+   }
   void ClearAllDataSet () {
       DataSet.clear();
+      id = 1;
+  }
+
+  void PrintDataSet () {
+    DataSet.map((map) => print(map)).toList();
   }
 
   Future newtaskOnPressed(BuildContext context) async {
@@ -67,10 +73,11 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
           ),
           backgroundColor: Colors.white.withOpacity(0.8999999761581421),
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("New task",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-              SizedBox(width: 400 - 100 * 3.5),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
               Container(
                 width: 100,
                 height: 50,
@@ -81,15 +88,16 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                 ),
                 child: TextButton(
                   onPressed: () {CreateNewTask(context);},
-                  child: const Text("Create", style: TextStyle(color: Colors.black, fontSize: 20)),),
+                  child: const Text("Create", style: TextStyle(color: Colors.black, fontSize: 20)),
+                ),
               ),
             ],
           ),
           content: StatefulBuilder(
               builder: (context, setState) {
                 return Container(
-                  height: 400,
-                  width: 400,
+                  height: 470,
+                  width: MediaQuery.of(context).size.width,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -102,18 +110,19 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                           controller: _nameController,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Select       ', style: TextStyle(fontSize: 20),),
+                              'Select Area', style: TextStyle(fontSize: 20),),
                             Text(
                               _areaController.text
                                   .toString()
-                                  .isEmpty ? "Select Area" : _areaController
+                                  .isEmpty ? "None" : _areaController
                                   .text.toString(),
                               style: TextStyle(fontSize: 20),
                             ),
                             PopupMenuButton<String>(
-                              icon: Icon(Icons.arrow_drop_down_circle_outlined),
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined, size: 40),
                               onSelected: (String? area) {
                                 setState(() {
                                   _areaController.text = area.toString();
@@ -122,16 +131,16 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                               itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<String>>[
                                 PopupMenuItem<String>(
-                                  value: 'Area 1',
+                                  value: '1',
                                   child: Text('Area 1',
                                       style: TextStyle(fontSize: 20)),),
                                 PopupMenuItem<String>(
-                                  value: 'Area 2',
+                                  value: '2',
                                   child: Text(
                                       'Area 2', style: TextStyle(fontSize: 20)),
                                 ),
                                 PopupMenuItem<String>(
-                                  value: 'Area 3',
+                                  value: '3',
                                   child: Text(
                                       'Area 3', style: TextStyle(fontSize: 20)),
                                 ),
@@ -141,42 +150,45 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                         ),
                         TextField(
                           decoration: const InputDecoration(
-                            labelText: "Concentration of 1st Fertilizer",
+                            labelText: "1st Mixer",
                             labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 20),
                           ),
-                          controller: _flow1Controller,
+                          controller: _mixer1Controller,
                           keyboardType: TextInputType.numberWithOptions(
                               decimal: true),
                           inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^\.')),
                             FilteringTextInputFormatter.allow(
                                 RegExp(r'[0-9.]')),
                           ],
                         ),
                         TextField(
                           decoration: const InputDecoration(
-                            labelText: "Concentration of 2nd Fertilizer",
+                            labelText: "2nd Mixer",
                             labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 20),
                           ),
-                          controller: _flow2Controller,
+                          controller: _mixer2Controller,
                           keyboardType: TextInputType.numberWithOptions(
                               decimal: true),
                           inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^\.')),
                             FilteringTextInputFormatter.allow(
                                 RegExp(r'[0-9.]')),
                           ],
                         ),
                         TextField(
                           decoration: const InputDecoration(
-                            labelText: "Concentration of 3rd Fertilizer",
+                            labelText: "3rd Mixer",
                             labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 20),
                           ),
-                          controller: _flow3Controller,
+                          controller: _mixer3Controller,
                           keyboardType: TextInputType.numberWithOptions(
                               decimal: true),
                           inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^\.')),
                             FilteringTextInputFormatter.allow(
                                 RegExp(r'[0-9.]')),
                           ],
@@ -195,10 +207,11 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                         ),
                         SizedBox(height: 10),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                'Start Time  ${starttime.hour}:${starttime
-                                    .minute}  ',
+                                'Start Time \n'
+                                    '${starttime.hour}:${starttime.minute}',
                                 style: TextStyle(fontSize: 20)),
                             SizedBox(width: 10),
                             Container(
@@ -213,42 +226,33 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                                   if (pickedTime != null) {
                                     setState(() {
                                       starttime = pickedTime;
-                                      updateStartTimeController(
-                                          '${starttime.hour
-                                              .toString()}:${starttime.minute
-                                              .toString()}');
-                                    });
-                                  }
-                                },
-                                child: Text("Choose",
-                                    style: TextStyle(color: Colors.black)),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Text(
-                                'Stop Time  ${stoptime.hour}:${stoptime
-                                    .minute}  ',
-                                style: TextStyle(fontSize: 20)),
-                            SizedBox(width: 10),
-                            Container(
-                              width: 100,
-                              height: 40,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  final TimeOfDay? pickedTime = await showCustomTimePicker(
-                                    context: context,
-                                    initialTime: stoptime, // Thời gian ban đầu
-                                  );
-                                  if (pickedTime != null) {
-                                    setState(() {
-                                      stoptime = pickedTime;
-                                      updateStopTimeController('${stoptime.hour
-                                          .toString()}:${stoptime.minute
-                                          .toString()}');
+                                      if (starttime.hour < 10 || starttime.minute < 10) {
+                                        if (starttime.hour < 10 && starttime.minute >= 10) {
+                                          updateStartTimeController(
+                                              '0${starttime.hour
+                                                  .toString()}:${starttime
+                                                  .minute
+                                                  .toString()}');
+                                        }
+                                        else if (starttime.minute < 10 && starttime.hour >= 10) {
+                                          updateStartTimeController(
+                                              '${starttime.hour
+                                                  .toString()}:0${starttime
+                                                  .minute
+                                                  .toString()}');
+                                        }
+                                        else {
+                                            updateStartTimeController(
+                                                '0${starttime.hour.toString()}:0${starttime.minute.toString()}'
+                                            );
+                                        }
+                                      }
+                                      else {
+                                        updateStartTimeController(
+                                            '${starttime.hour
+                                                .toString()}:${starttime.minute
+                                                .toString()}');
+                                      }
                                     });
                                   }
                                 },
@@ -317,10 +321,10 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
 
   Future CreateNewTask(BuildContext context) async {
     if (_nameController.text.isEmpty || _areaController.text.isEmpty ||
-        _flow1Controller.text.isEmpty || _flow2Controller.text.isEmpty ||
-        _flow3Controller.text.isEmpty ||
-        _cycleController.text.isEmpty || _starttimeController.text.isEmpty ||
-        _stoptimeController.text.isEmpty) {
+        _mixer1Controller.text.isEmpty || _mixer2Controller.text.isEmpty ||
+        _mixer3Controller.text.isEmpty ||
+        _cycleController.text.isEmpty || _starttimeController.text.isEmpty)
+    {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -352,34 +356,32 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
       );
     }
     else {
-      Map<String, dynamic> newDataSet = {
-        'Name': '${_nameController.text.toString()}',
-        'Area': '${_areaController.text.toString()}',
-        'Concentration of 1st fertilizer': '${_flow1Controller.text
-            .toString()}',
-        'Concentration of 2nd fertilizer': '${_flow2Controller.text
-            .toString()}',
-        'Concentration of 3rd fertilizer': '${_flow3Controller.text
-            .toString()}',
-        'Cycle': '${_cycleController.text.toString()}',
-        'Start Time': '${_starttimeController.text.toString()}',
-        'Stop Time': '${_stoptimeController.text.toString()}',
-      };
-        AddADataSet(newDataSet);
-      if (DataSet.length >= 3) {
+
+      User user = User('create', '${_nameController.text}', '${id.toString()}', '${_areaController.text}', '${_mixer1Controller.text}', '${_mixer2Controller.text}', '${_mixer3Controller.text}', '${_cycleController.text}', '${_starttimeController.text}');
+      userMap = user.toJson();
+      adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', userMap.toString());
+
+      AddADataSet(userMap);
+
+      PrintDataSet();
+
+      if (DataSet.length >=10) {
         ClearAllDataSet();
       }
-      Navigator.pop(context);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+      ).then((_) => Navigator.pop(context));
+
       _nameController.text = "";
       _areaController.text = "";
-      _flow1Controller.text = "";
-      _flow2Controller.text = "";
-      _flow3Controller.text = "";
+      _mixer1Controller.text = "";
+      _mixer2Controller.text = "";
+      _mixer3Controller.text = "";
       _cycleController.text = "";
       _starttimeController.text = "";
-      _stoptimeController.text = "";
       starttime = TimeOfDay(hour: 0, minute: 0);
-      stoptime = TimeOfDay(hour: 0, minute: 0);
     }
   }
 
@@ -401,9 +403,9 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                   children: [
                     ListTile(
                       title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Select Time", style: TextStyle(fontSize: 25, color: Colors.black),),
-                          SizedBox(width: 400 - 100*2.5),
                           TextButton(
                               onPressed: () {Navigator.pop(context);},
                               child: Text("Done", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
@@ -411,7 +413,7 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
                         ],
                       ),
                     ),
-                    Expanded(
+                    Center(
                       child: CupertinoTimerPicker(
                         mode: CupertinoTimerPickerMode.hm,
                         initialTimerDuration: Duration(
