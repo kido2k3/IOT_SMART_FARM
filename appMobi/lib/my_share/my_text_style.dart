@@ -11,7 +11,7 @@ class MyTextStyle {
     letterSpacing: -0.24,
   );
   static TextStyle welcome = const TextStyle(
-    color: Colors.black,
+    color: Colors.white,
     fontSize: 30,
     fontFamily: 'Inter',
     fontWeight: FontWeight.w600,

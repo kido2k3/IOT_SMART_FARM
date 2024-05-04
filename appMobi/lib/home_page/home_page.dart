@@ -1,3 +1,4 @@
+import 'package:app_mobi/home_page/dashboard_box/dashboard_box.dart';
 import 'package:app_mobi/home_page/task_box/task_box.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box.dart';
@@ -11,27 +12,31 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Stack(
       children: [
-        Background(),
+        // Background(),
         Column(
           children: [
             SizedBox(
               height: 10,
             ),
             Expanded(
-              flex: 30,
+              flex: 10,
               child: WelcomeBox()
             ),
             Expanded(
-                flex: 50,
+                flex: 25,
+                child: DashboardBox()
+            ),
+            Expanded(
+                flex: 30,
                 child: TaskBox()
             ),
             Expanded(
-                flex: 15,
+                flex: 9,
                 child: ToolBar()
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 5,
+            // ),
           ],
         ),
       ],

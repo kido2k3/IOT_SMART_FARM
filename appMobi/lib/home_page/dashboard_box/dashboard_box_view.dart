@@ -1,6 +1,6 @@
 
 import 'package:app_mobi/mvp/mvp_view.dart';
 
-abstract class WelcomeBoxView extends MvpView{
+abstract class DashboardBoxView extends MvpView{
 
 }
