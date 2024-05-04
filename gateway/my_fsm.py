@@ -2,6 +2,7 @@ import my_parameters
 import my_os
 import my_serial
 import my_crc
+import my_server
 
 class Command:
     def __init__(self, data=0, flag=0):
@@ -74,7 +75,60 @@ class Command:
     def turn_out_pump_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("PUMP_OUT_OFF"))
 
+    def get_Temperature(self):
+        my_serial.serialUART.ser.write(my_crc.crc_calc.export("SOIL_TEMPERATURE"))
+
+    def get_Humidity(self):
+        my_serial.serialUART.ser.write(my_crc.crc_calc.export("SOIL_HUMIDITY"))
+
 command = Command()
+count_temp = 0
+
+def my_fsm_temperature():
+    global command, count_temp
+    data = my_serial.serialUART.ReadSerial()
+    if data == -2:
+        if count_temp % 10 == 0:   
+            my_os.operation_system.add_process(command.get_Temperature)
+        elif count_temp/10 > 3:
+            print("time out temperature")
+            my_os.operation_system.remove_process(my_fsm_temperature)
+            count_temp = 0
+    elif data != -2:
+        print(data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data)
+        my_os.operation_system.remove_process(my_fsm_temperature)
+    count_temp += 1
+
+def get_temperature():
+    global command, count_temp
+    count_temp = 0
+    my_os.operation_system.add_process(my_fsm_temperature, 0, 1)
+    my_os.operation_system.add_process(command.get_Temperature)
+
+count_humid = 0
+
+def my_fsm_humidity():
+    global command, count_humid
+    data = my_serial.serialUART.ReadSerial()
+    if data == -2:
+        if count_humid % 10 == 0:   
+            my_os.operation_system.add_process(command.get_Humidity)
+        elif count_humid/10 > 3:
+            print("time out humidity")
+            my_os.operation_system.remove_process(my_fsm_humidity)
+            count_humid = 0
+    elif data != -2:
+        print(data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data)
+        my_os.operation_system.remove_process(my_fsm_humidity)
+    count_humid += 1
+
+def get_humidity():
+    global command, count_humid
+    count_humid = 0
+    my_os.operation_system.add_process(my_fsm_humidity, 0, 1)
+    my_os.operation_system.add_process(command.get_Humidity)
 
 def my_fsm(state, task, command, count, flag):
     my_os.operation_system.add_process(command.read_connection, 0, 0)

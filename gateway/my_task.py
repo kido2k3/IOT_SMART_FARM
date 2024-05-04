@@ -1,15 +1,17 @@
+from my_fsm import *
 from my_parameters import WAITING, RUNNING, DONE
 import my_parameters
 from datetime import datetime
-from my_fsm import *
-# from my_os import operation_system
 import my_os
+import json
+import my_server
 
 class Task:
     def __init__(self, id: str, cycle_num: int, mixer: list, area: str, start_time: str) -> None:
         if len(mixer) == 3:
             self.id = id
             self.cycle_num = cycle_num
+            self.cycle_num_const = cycle_num
             self.mixer = mixer
             self.area = area
             self.start_time = start_time
@@ -18,7 +20,6 @@ class Task:
 
     def __str__(self) -> str:
         return f"Task {self.id}, {self.cycle_num} cycles, {self.mixer}(mixer1, 2, 3), area {self.area}, {self.start_time}"
-
 
 class Task_List:
     # task_list = list()
@@ -39,6 +40,14 @@ class Task_List:
             if i == len(self.task_list) - 1:
                 self.task_list.append(task)
 
+    def remove_by_id(self, task_id: str):
+        for task in self.task_list:
+            if task.id == task_id:
+                self.task_list.remove(task)
+                print(f"Task with ID {task_id} removed successfully.")
+                return
+        print(f"No task found with ID {task_id}.")
+
     def __str__(self) -> str:
         string = str()
         for task in self.task_list:
@@ -53,13 +62,20 @@ def check_waiting_task():
     # check the time of tasks in waiting list
     # if there is any in waiting list need to be run, remove that away the list, add that in running
     global waiting, running
-
+    # print("check waiting")
     now = datetime.now()
     current_time = now.strftime("%H:%M")
 
     if not waiting.is_empty():
         for task in waiting.task_list:
             if task.start_time == current_time:
+                w2r = {
+                    "code": "w2r",
+                    "id": task.id,
+                    "start time": task.start_time
+                }
+                w2r = json.dumps(w2r)
+                my_server.server_gateway.client.publish("kido2k3/feeds/iot-gateway", w2r)
                 running.add(task)
                 waiting.task_list.remove(task)
 
@@ -69,7 +85,8 @@ def check_running_task():
 # check running list is empty or not.
 # If running list is not empty, run task index = 0, decrease cycle, remove and
 # re-add that task if cycle is not equal 0
-    global running, command, fsm
+    global waiting, running, command, fsm
+    # print("check_running")
     # print(status)
     if running.is_empty() == False:
         if my_parameters.status == WAITING:
@@ -80,8 +97,23 @@ def check_running_task():
             my_os.operation_system.remove_process(fsm.run_fsm)
             fsm = None
             if running.task_list[0].cycle_num == 0:
-                running.task_list.pop(0)
+                r2w = {
+                    "code": "r2w",
+                    "id": running.task_list[0].id,
+                    "start time": running.task_list[0].start_time
+                }
+                r2w = json.dumps(r2w)
+                my_server.server_gateway.client.publish("kido2k3/feeds/iot-gateway", r2w)
+                running.task_list[0].cycle_num = running.task_list[0].cycle_num_const
+                waiting.task_list.append(running.task_list.pop(0))
             elif running.task_list[0].cycle_num != 0:
+                update = {
+                    "code": "update",
+                    "id": running.task_list[0].id,
+                    "cycle": running.task_list[0].cycle_num
+                }
+                update = json.dumps(update)
+                my_server.server_gateway.client.publish("kido2k3/feeds/iot-gateway", update)
                 running.task_list.append(running.task_list.pop(0))
             my_parameters.status = WAITING
         # print("in check running",my_parameters.status)
