@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 import 'package:app_mobi/home_page/home_page.dart';
 import 'package:app_mobi/my_share/user.dart';
@@ -357,7 +358,7 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
     }
     else {
 
-      User user = User('create', '${_nameController.text}', '${id.toString()}', '${_areaController.text}', '${_mixer1Controller.text}', '${_mixer2Controller.text}', '${_mixer3Controller.text}', '${_cycleController.text}', '${_starttimeController.text}');
+      User user = User('create', '${_nameController.text}', '${id.toString()}', '${_areaController.text}', double.parse(_mixer1Controller.text), double.parse(_mixer2Controller.text), double.parse(_mixer3Controller.text), int.parse(_cycleController.text), '${_starttimeController.text}');
       userMap = user.toJson();
       adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', userMap.toString());
 

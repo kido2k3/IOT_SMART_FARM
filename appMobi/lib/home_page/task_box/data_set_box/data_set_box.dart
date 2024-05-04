@@ -47,12 +47,11 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Running", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   Container(
                     height: 100,
-                    alignment: Alignment.center,
                     child: SingleChildScrollView(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -62,6 +61,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                           return Column(
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
@@ -79,11 +79,11 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                             style: TextStyle(fontSize: 18, color: Colors.black),
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        // SizedBox(width: 130),
                                         IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              User user = User('delete', '', '${_toolbarpresenter.DataSet[index]['id']}', '', '', '', '', '', '');
+                                              User user = User('delete', '', '${_toolbarpresenter.DataSet[index]['id']}', '', -11.11, -11.11, -11.11, -11, '');
                                               _toolbarpresenter.userMap = user.toJson();
                                               adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', _toolbarpresenter.userMap.toString());
 
@@ -114,7 +114,6 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
             ),
             SizedBox(height: 10),
             Container(
-              alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8999999761581421),
                 borderRadius: BorderRadius.circular(20),
@@ -134,6 +133,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                           return Column(
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
@@ -141,21 +141,20 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextButton(
                                           onPressed: () {_datasetboxpresenter.detailtaskOnPressed(context, index, _toolbarpresenter);},
                                           child: Text(
-                                            '\t \t Name: ${_toolbarpresenter.DataSet[index]['name']} \n'
-                                                '\t \t Start Time: ${_toolbarpresenter.DataSet[index]['starttime']}',
+                                            '\t Name: ${_toolbarpresenter.DataSet[index]['name']} \n'
+                                                '\t Start Time: ${_toolbarpresenter.DataSet[index]['starttime']}',
                                             style: TextStyle(fontSize: 18, color: Colors.black),
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        // SizedBox(width: 130),
                                         IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              User user = User('delete', '', '${_toolbarpresenter.DataSet[index]['id']}', '', '', '', '', '', '');
+                                              User user = User('delete', '', '${_toolbarpresenter.DataSet[index]['id']}', '', -11.11, -11.11, -11.11, -11, '');
                                               _toolbarpresenter.userMap = user.toJson();
                                               adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', _toolbarpresenter.userMap.toString());
 

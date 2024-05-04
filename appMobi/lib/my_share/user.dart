@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -10,10 +12,10 @@ class User {
   String name;
   String id;
   String area;
-  String mixer1;
-  String mixer2;
-  String mixer3;
-  String cycle;
+  double mixer1;
+  double mixer2;
+  double mixer3;
+  int cycle;
   String starttime;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

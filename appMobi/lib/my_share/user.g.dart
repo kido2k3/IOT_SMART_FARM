@@ -11,10 +11,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       json['name'] as String,
       json['id'] as String,
       json['area'] as String,
-      json['mixer1'] as String,
-      json['mixer2'] as String,
-      json['mixer3'] as String,
-      json['cycle'] as String,
+      json['mixer1'] as double,
+      json['mixer2'] as double,
+      json['mixer3'] as double,
+      json['cycle'] as int,
       json['starttime'] as String,
     );
 
