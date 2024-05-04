@@ -60,8 +60,9 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
       id = 1;
   }
 
-  void PrintDataSet () {
-    DataSet.map((map) => print(map)).toList();
+  void PrintDataSet (String s) {
+    // DataSet.map((map) => print(map)).toList();
+    print(s);
   }
 
   Future newtaskOnPressed(BuildContext context) async {
@@ -358,13 +359,14 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
     }
     else {
 
-      User user = User('create', '${_nameController.text}', '${id.toString()}', '${_areaController.text}', double.parse(_mixer1Controller.text), double.parse(_mixer2Controller.text), double.parse(_mixer3Controller.text), int.parse(_cycleController.text), '${_starttimeController.text}');
+      User user = User('${_nameController.text}', '${id.toString()}', '${_areaController.text}', double.parse(_mixer1Controller.text), double.parse(_mixer2Controller.text), double.parse(_mixer3Controller.text), int.parse(_cycleController.text), '${_starttimeController.text}');
       userMap = user.toJson();
-      adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', userMap.toString());
+      String jsonString = JsonEncoder.withIndent(' ').convert(userMap);
+      adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', jsonString);
 
       AddADataSet(userMap);
 
-      PrintDataSet();
+      PrintDataSet(jsonString);
 
       if (DataSet.length >=10) {
         ClearAllDataSet();
