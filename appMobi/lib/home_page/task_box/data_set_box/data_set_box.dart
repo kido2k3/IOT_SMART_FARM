@@ -43,15 +43,14 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8999999761581421),
+                color: Colors.white.withOpacity(0),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Running", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   Container(
-                    height: 100,
+                    height: 300,
                     child: SingleChildScrollView(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -65,7 +64,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.8999999761581421),
+                                      color: Colors.white.withOpacity(0.5),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
@@ -79,7 +78,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                             style: TextStyle(fontSize: 18, color: Colors.black),
                                           ),
                                         ),
-                                        // SizedBox(width: 130),
+                                        SizedBox(width: 100),
                                         IconButton(
                                           onPressed: () {
                                             setState(() {
@@ -92,73 +91,6 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                                 _toolbarpresenter.id = 1;
                                               }
                                             });
-                                          },
-                                          icon: Icon(Icons.cancel_outlined),
-                                          color: Colors.red,
-                                          iconSize: 40,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8999999761581421),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Waiting", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Container(
-                    height: 100,
-                    child: SingleChildScrollView(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _toolbarpresenter.DataSet.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.8999999761581421),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {_datasetboxpresenter.detailtaskOnPressed(context, index, _toolbarpresenter);},
-                                          child: Text(
-                                            '\t Name: ${_toolbarpresenter.DataSet[index]['name']} \n'
-                                                '\t Start Time: ${_toolbarpresenter.DataSet[index]['starttime']}',
-                                            style: TextStyle(fontSize: 18, color: Colors.black),
-                                          ),
-                                        ),
-                                        // SizedBox(width: 130),
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              User user = User('delete', '', '${_toolbarpresenter.DataSet[index]['id']}', '', -11.11, -11.11, -11.11, -11, '');
-                                              _toolbarpresenter.userMap = user.toJson();
-                                              adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', _toolbarpresenter.userMap.toString());
-
-                                              _toolbarpresenter.DataSet.removeAt(index);                                });
                                           },
                                           icon: Icon(Icons.cancel_outlined),
                                           color: Colors.red,

@@ -10,32 +10,16 @@ class MainScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("SCHEDULING APP"),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 27,
-          fontFamily: 'Intel',
-        ),
-        backgroundColor: Colors.green,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-                colors: [
-                  Colors.greenAccent.withOpacity(0.7),
-                  Colors.lightBlueAccent.withOpacity(0.7),
-                ],
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.red, Colors.blue, Colors.white], // Các màu sắc cho gradient
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.1, 0.6, 0.95], // Điểm dừng của gradient
+            tileMode: TileMode.clamp,
           ),
         ),
-      ),
-      body: const SafeArea(
         child: HomePage(),
       ),
     );

@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../welcome_box/weather_box/weather_box.dart';
+
 class TaskBox extends StatefulWidget {
   const TaskBox({super.key});
 
@@ -22,7 +24,7 @@ class _TaskBoxState extends State<TaskBox> {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.5),
+        color: Colors.transparent.withOpacity(0.15),
         borderRadius: BorderRadius.circular(30),
       ),
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
@@ -30,16 +32,20 @@ class _TaskBoxState extends State<TaskBox> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 10),
           Container(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Text("\t Task Manager", style: MyTextStyle.welcome),
-            ),
-          ),
-          Container(
-            child: Expanded(
-              child: DataSetBox(),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Text("\t Scheduled Tasks", style: TextStyle(fontSize: 30, color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                    child: DataSetBox(),
+                ),
+              ],
             ),
           ),
         ],

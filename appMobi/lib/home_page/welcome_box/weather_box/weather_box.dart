@@ -1,3 +1,4 @@
+
 import 'package:app_mobi/home_page/welcome_box/weather_box/weather_box_presenter.dart';
 import 'package:app_mobi/home_page/welcome_box/weather_box/weather_box_view.dart';
 import 'package:app_mobi/my_share/my_text_style.dart';
@@ -15,6 +16,8 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
   String _time = "";
   double _temperature = 0;
   double _humidity = 0;
+  bool _light = false;
+  bool _pump = false;
   late WeatherBoxPresenter  _presenter;
   @override
   void initState() {
@@ -29,8 +32,9 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      height: 290,
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8999999761581421), borderRadius: BorderRadius.circular(25)),
+          color: Colors.white.withOpacity(0), borderRadius: BorderRadius.circular(25)),
       margin: const EdgeInsets.all(2),
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -44,48 +48,139 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
                 children: [
                   Row(
                     children: [
-                      Text(_city,
-                          style: MyTextStyle.weather
+                      Text(_city + '  ',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
                       ),
                       const Icon(
-                        Icons.location_on,
-                        color: Colors.red,
+                        Icons.location_on_outlined,
+                        size: 20,
+                        color: Colors.white,
                       )
                     ],
                   ),
                   Text(_time,
-                      style: MyTextStyle.weather
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
                       ),
                 ],
-              )),
+              ),
+          ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   flex: 1,
+              child: Container(
+                // width: 210,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: Colors.transparent.withOpacity(0.45),
+                ),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("Temperature", style: MyTextStyle.weather),
-                      Text("$_temperature℃", style: MyTextStyle.weather)
+                      Icon(Icons.device_thermostat_outlined, size: 40, color: Colors.white,),
+                      Text("$_temperature℃", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                      )
                     ],
                   ),
+              ),
                 ),
+                SizedBox(width: 15),
                 Expanded(
                   flex: 1,
+                  child: Container(
+                    // width: 210,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.transparent.withOpacity(0.45),
+                    ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("Humidity", style: MyTextStyle.weather),
-                      Text("$_humidity%", style: MyTextStyle.weather)
+                      Icon(Icons.water_drop_outlined, size: 40, color: Colors.white,),
+                      Text("$_humidity%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                      )
                     ],
                   ),
-                )
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    // width: 210,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.transparent.withOpacity(0.45),
+                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.light_mode_outlined, size: 40, color: Colors.white,),
+                      Text("$_humidity%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                      )
+                    ],
+                  ),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
+          SizedBox(height: 15),
+          Expanded(
+            flex: 2,
+              child: Container(
+                width: 210,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.transparent.withOpacity(0.45),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: _light ? Colors.blue : Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _light = !_light;
+                            });
+                          },
+                          icon: _light ? Icon(Icons.lightbulb_outline_rounded, color: Colors.white, size: 40) : Icon(Icons.lightbulb_outline_rounded, color: Colors.transparent.withOpacity(0.45), size: 40),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: _pump ? Colors.blue : Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _pump = !_pump;
+                            });
+                          },
+                          icon: _pump ? Icon(Icons.heat_pump_outlined, color: Colors.white, size: 40) : Icon(Icons.heat_pump_outlined, color: Colors.transparent.withOpacity(0.45), size: 40),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ),
         ],
       ),
     );
