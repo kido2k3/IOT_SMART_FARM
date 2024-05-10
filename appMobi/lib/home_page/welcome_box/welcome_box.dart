@@ -26,42 +26,62 @@ class _WelcomeBoxState extends State<WelcomeBox> implements WelcomeBoxView {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      // decoration: BoxDecoration(
-      //     color: Colors.white.withOpacity(0.5),
-      //     borderRadius: BorderRadius.circular(30)),
+      decoration: BoxDecoration(
+          color: Colors.transparent.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(30)),
       margin:const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       padding:const EdgeInsets.all(10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-            Text(
-                "Welcome Đạt",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                  height: 0,
-                  letterSpacing: -0.24,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0),
+            borderRadius: BorderRadius.circular(15),
+        ),
+        // margin:const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+        // padding:const EdgeInsets.all(5),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Welcome Đạt",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                        height: 0,
+                        letterSpacing: -0.24,
+                      ),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('images/logo2.png'),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
             ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 1,
-                  ),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('images/logo2.png'),
-                  ),
-                ),
-              ),
-        ],
+            Expanded(
+              flex: 3,
+                child: WeatherBox(),
+            ),
+          ],
+        ),
       ),
     );
   }

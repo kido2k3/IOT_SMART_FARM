@@ -1,19 +1,17 @@
-
-
 import 'dart:convert';
 
+import 'package:app_mobi/home_page/welcome_box/weather_box/temperature/temperature_view.dart';
 import 'package:app_mobi/model/adafruit_server.dart';
+import 'package:app_mobi/model/network/http_help.dart';
 import 'package:app_mobi/mvp/mvp_presenter.dart';
-import 'package:app_mobi/temperature/temperature_view.dart';
-
-import '../model/network/http_help.dart';
 
 TemperaturePresenter temperaturePresenter = TemperaturePresenter();
 
 class TemperaturePresenter extends MvpPresenter<TemperatureView>{
-  void changeValue(double val){
-    isViewAttached ? getView().updateData(val) : null;
-  }
+
+  // void changeValue(double val){
+  //   isViewAttached ? getView().updateData(val) : null;
+  // }
   Future<void> getValue() async {
     checkViewAttached();
     Future.delayed(const Duration(seconds: 5));
@@ -21,12 +19,13 @@ class TemperaturePresenter extends MvpPresenter<TemperatureView>{
     var response = await adafruitServer.httpHelper.fetchText(url);
     if (NetworkUtils.isReqSuccess(response)) {
       String text = response.body;
-      final jsonData = await json.decode(text);
+      final jsonData = await jsonDecode(text);
       final val = jsonData["last_value"];
-      print(val);
-      isViewAttached ? getView().updateData(double.parse(val)) : null;
-    } else {
+      isViewAttached ? getView().updateTemperatureData(double.parse(val)): null;
+    }
+    else {
       isViewAttached ? getView().onFailLoadUpdate() : null;
     }
   }
+
 }

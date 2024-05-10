@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:app_mobi/home_page/home_page.dart';
+import 'package:app_mobi/home_page/task_box/data_set_box/data_set_box_presenter.dart';
 import 'package:app_mobi/my_share/user.dart';
 import 'package:app_mobi/home_page/task_box/task_box.dart';
 import 'package:app_mobi/home_page/task_box/task_box_presenter.dart';
@@ -19,9 +20,11 @@ import '../../mvp/mvp_presenter.dart';
 ToolBarPresenter toolBarPresenter = ToolBarPresenter();
 
 class ToolBarPresenter extends MvpPresenter<ToolBarView> {
+  DataSetBoxPresenter _datasetboxpresenter = dataSetBoxPresenter;
+
   Map<String, dynamic> userMap = {};
-  List<Map<String, dynamic>> DataSet = [];
-  AdafruitServer adafruitServer = AdafruitServer();
+  List<Map<String, dynamic>> RunningDataSet = [];
+  List<Map<String, dynamic>> WaitingDataSet = [];
   int id = 1;
 
   TextEditingController _userController = TextEditingController();
@@ -48,19 +51,6 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
 
   void updateStartTimeController (String s) {
     _starttimeController.text = s;
-  }
-
-   void AddADataSet (Map<String, dynamic> newDataSet) {
-      DataSet.add(newDataSet);
-      id += 1;
-   }
-  void ClearAllDataSet () {
-      DataSet.clear();
-      id = 1;
-  }
-
-  void PrintDataSet () {
-    DataSet.map((map) => print(map)).toList();
   }
 
   Future newtaskOnPressed(BuildContext context) async {
@@ -357,23 +347,26 @@ class ToolBarPresenter extends MvpPresenter<ToolBarView> {
     }
     else {
 
-      User user = User('create', '${_nameController.text}', '${id.toString()}', '${_areaController.text}', '${_mixer1Controller.text}', '${_mixer2Controller.text}', '${_mixer3Controller.text}', '${_cycleController.text}', '${_starttimeController.text}');
+      User user = User(
+          code: 'create',
+          name: '${_nameController.text}',
+          id: '${id.toString()}',
+          area: '${_areaController.text}',
+          mixer1: double.parse(_mixer1Controller.text),
+          mixer2: double.parse(_mixer2Controller.text),
+          mixer3: double.parse(_mixer3Controller.text),
+          cycle: int.parse(_cycleController.text),
+          starttime: '${_starttimeController.text}'
+      );
       userMap = user.toJson();
-      adafruitServer.mqttHelp.publish('datpham0411/feeds/iot-mobile', userMap.toString());
+      String jsonString = JsonEncoder.withIndent(' ').convert(userMap);
+      adafruitServer.mqttHelp.publish('kido2k3/feeds/iot-mobile', jsonString);
+      userMap["remaining cycle"] = int.parse(_cycleController.text);
+      _datasetboxpresenter.getView().addWaitingData();
 
-      AddADataSet(userMap);
+      Navigator.pop(context);
 
-      PrintDataSet();
-
-      if (DataSet.length >=10) {
-        ClearAllDataSet();
-      }
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-      ).then((_) => Navigator.pop(context));
-
+      id+=1;
       _nameController.text = "";
       _areaController.text = "";
       _mixer1Controller.text = "";

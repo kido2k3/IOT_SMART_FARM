@@ -7,7 +7,6 @@ part 'user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class User {
-  User(this.code, this.name, this.id, this.area, this.mixer1, this.mixer2, this.mixer3, this.cycle, this.starttime);
   String code;
   String name;
   String id;
@@ -17,6 +16,19 @@ class User {
   double mixer3;
   int cycle;
   String starttime;
+
+  User({
+    required this.code,
+    this.name ="",
+    required this.id,
+    this.area ="",
+    this.mixer1 =0.0,
+    this.mixer2 =0.0,
+    this.mixer3 =0.0,
+    this.cycle =0,
+    this.starttime =""
+  });
+
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:app_mobi/humidity/humidity_view.dart';
+import 'package:app_mobi/home_page/welcome_box/weather_box/humidity/humidity_view.dart';
+import 'package:app_mobi/model/adafruit_server.dart';
+import 'package:app_mobi/model/network/http_help.dart';
+import 'package:app_mobi/mvp/mvp_presenter.dart';
 
-import '../model/adafruit_server.dart';
-import '../model/network/http_help.dart';
-import '../mvp/mvp_presenter.dart';
 
 HumidityPresenter humidityPresenter = HumidityPresenter();
 
@@ -20,11 +20,11 @@ class HumidityPresenter extends MvpPresenter<HumidityView>{
     var response = await adafruitServer.httpHelper.fetchText(url);
     if (NetworkUtils.isReqSuccess(response)) {
       String text = response.body;
-      final jsonData = await json.decode(text);
+      final jsonData = await jsonDecode(text);
       final val = jsonData["last_value"];
-      print(val);
-      isViewAttached ? getView().updateData(double.parse(val)) : null;
-    } else {
+      isViewAttached ? getView().updateHumidityData(double.parse(val)): null;
+    }
+    else {
       isViewAttached ? getView().onFailLoadUpdate() : null;
     }
   }

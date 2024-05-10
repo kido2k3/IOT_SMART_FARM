@@ -8,17 +8,14 @@ AdafruitServer adafruitServer = AdafruitServer();
 class AdafruitServer {
   static final AdafruitServer _adafruitServer = AdafruitServer._internal();
   final HttpHelper httpHelper = HttpHelper();
-  // final MqttHelp mqttHelp = MqttHelp(
-  //     hostName: "io.adafruit.com",
-  //     userName: "kido2k3",
-  //     password: "insert here",
-  //     feeds: [
-  //     ]);
   final MqttHelp mqttHelp = MqttHelp(
       hostName: "io.adafruit.com",
-      userName: "datpham0411",
-      password: "insert here",
+      userName: "kido2k3",
+      password: "password",
       feeds: [
+        "kido2k3/feeds/iot-humidity",
+        "kido2k3/feeds/iot-temperature",
+        "kido2k3/feeds/iot-gateway",
       ]);
 
   // SharedPrefsHelper sharedPrefsHelper=new SharedPrefsHelper();
