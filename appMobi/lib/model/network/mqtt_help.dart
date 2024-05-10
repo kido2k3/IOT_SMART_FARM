@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:app_mobi/home_page/task_box/data_set_box/data_set_box_presenter.dart';
+import 'package:app_mobi/home_page/welcome_box/weather_box/humidity/humidity_presenter.dart';
+import 'package:app_mobi/home_page/welcome_box/weather_box/temperature/temperature_presenter.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+
 
 import '../../home_page/tool_bar/tool_bar_presenter.dart';
 
@@ -14,10 +19,15 @@ class MqttHelp {
   late String password;
   var feeds;
   late MqttServerClient _client;
+
+  DataSetBoxPresenter _datasetboxpresenter = dataSetBoxPresenter;
+  TemperaturePresenter _temperaturepresenter = temperaturePresenter;
+  HumidityPresenter _humiditypresenter = humidityPresenter;
+
   MqttHelp({
     required this.hostName,
     required this.userName,
-    required this.feeds,
+    this.feeds,
     this.password = "",
     this.clientID = ""}) {
     _client = MqttServerClient(hostName, clientID);
@@ -44,9 +54,11 @@ class MqttHelp {
     _client.publishMessage(pubTopic, MqttQos.atMostOnce, builder.payload!,
         retain: true);
   }
+
   bool isConnected(){
     return _client.connectionStatus!.state == MqttConnectionState.connected;
   }
+
   Future<void> connect() async {
     try {
       await _client.connect(userName, password);
@@ -62,6 +74,15 @@ class MqttHelp {
         final recMess = c![0].payload as MqttPublishMessage;
         final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
         print('Received message: topic is ${c[0].topic}, payload is $pt');
+        if (c[0].topic == "kido2k3/feeds/iot-temperature") {
+          _temperaturepresenter.getValue();
+        }
+        else if (c[0].topic == "kido2k3/feeds/iot-humidity") {
+          _humiditypresenter.getValue();
+        }
+        else if (c[0].topic == "kido2k3/feeds/iot-gateway") {
+          _datasetboxpresenter.getValue();
+        }
       });
       for (var element in feeds) {
         _client.subscribe(element, MqttQos.atMostOnce);
@@ -82,6 +103,15 @@ class MqttHelp {
   /// The subscribed callback
   void onSubscribed(String topic) {
     print('Subscription confirmed for topic $topic');
+    if (topic == "kido2k3/feeds/iot-temperature") {
+      _temperaturepresenter.getValue();
+    }
+    else if (topic == "kido2k3/feeds/iot-humidity") {
+      _humiditypresenter.getValue();
+    }
+    else if (topic == "kido2k3/feeds/iot-gateway") {
+      _datasetboxpresenter.getValue();
+    }
   }
 
   void onConnected() {

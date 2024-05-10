@@ -13,10 +13,10 @@ class MainScreen extends StatelessWidget{
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.red, Colors.blue, Colors.white], // Các màu sắc cho gradient
+            colors: [Colors.green, Colors.blue, Colors.white], // Các màu sắc cho gradient
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            stops: [0.1, 0.6, 0.95], // Điểm dừng của gradient
+            stops: [0.2, 0.75, 0.98], // Điểm dừng của gradient
             tileMode: TileMode.clamp,
           ),
         ),

@@ -1,4 +1,6 @@
 
+import 'package:app_mobi/home_page/welcome_box/weather_box/humidity/humidity.dart';
+import 'package:app_mobi/home_page/welcome_box/weather_box/temperature/temperature.dart';
 import 'package:app_mobi/home_page/welcome_box/weather_box/weather_box_presenter.dart';
 import 'package:app_mobi/home_page/welcome_box/weather_box/weather_box_view.dart';
 import 'package:app_mobi/my_share/my_text_style.dart';
@@ -32,7 +34,7 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 290,
+      // height: 250,
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0), borderRadius: BorderRadius.circular(25)),
       margin: const EdgeInsets.all(2),
@@ -69,117 +71,11 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  flex: 1,
-              child: Container(
-                // width: 210,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.transparent.withOpacity(0.45),
-                ),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.device_thermostat_outlined, size: 40, color: Colors.white,),
-                      Text("$_temperature℃", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-                      )
-                    ],
-                  ),
-              ),
-                ),
+                Temperature(),
                 SizedBox(width: 15),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    // width: 210,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.transparent.withOpacity(0.45),
-                    ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.water_drop_outlined, size: 40, color: Colors.white,),
-                      Text("$_humidity%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-                      )
-                    ],
-                  ),
-                  ),
-                ),
-                SizedBox(width: 15),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    // width: 210,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.transparent.withOpacity(0.45),
-                    ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.light_mode_outlined, size: 40, color: Colors.white,),
-                      Text("$_humidity%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-                      )
-                    ],
-                  ),
-                  ),
-                ),
+                Humidity(),
               ],
             ),
-          ),
-          SizedBox(height: 15),
-          Expanded(
-            flex: 2,
-              child: Container(
-                width: 210,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.transparent.withOpacity(0.45),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: _light ? Colors.blue : Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _light = !_light;
-                            });
-                          },
-                          icon: _light ? Icon(Icons.lightbulb_outline_rounded, color: Colors.white, size: 40) : Icon(Icons.lightbulb_outline_rounded, color: Colors.transparent.withOpacity(0.45), size: 40),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: _pump ? Colors.blue : Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _pump = !_pump;
-                            });
-                          },
-                          icon: _pump ? Icon(Icons.heat_pump_outlined, color: Colors.white, size: 40) : Icon(Icons.heat_pump_outlined, color: Colors.transparent.withOpacity(0.45), size: 40),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
           ),
         ],
       ),

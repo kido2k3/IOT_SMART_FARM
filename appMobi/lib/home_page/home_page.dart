@@ -1,9 +1,10 @@
-import 'package:app_mobi/home_page/dashboard_box/dashboard_box.dart';
 import 'package:app_mobi/home_page/task_box/task_box.dart';
 import 'package:app_mobi/home_page/tool_bar/tool_bar.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box.dart';
 import 'package:app_mobi/my_share/background.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,27 +17,23 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Expanded(
-              flex: 10,
-              child: WelcomeBox()
+                flex: 23,
+                child: WelcomeBox()
             ),
             Expanded(
-                flex: 25,
-                child: DashboardBox()
-            ),
-            Expanded(
-                flex: 30,
+                flex: 60,
                 child: TaskBox()
             ),
             Expanded(
-                flex: 9,
+                flex: 10,
                 child: ToolBar()
             ),
-            // SizedBox(
-            //   height: 5,
-            // ),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ],

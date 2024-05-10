@@ -33,21 +33,37 @@ class _TaskBoxState extends State<TaskBox> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 10),
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: Text("\t Scheduled Tasks", style: TextStyle(fontSize: 30, color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold)),
+          Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent.withOpacity(0),
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                Container(
-                    child: DataSetBox(),
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                // padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent.withOpacity(0),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        alignment: Alignment.topCenter,
+                        width: MediaQuery.of(context).size.width,
+                        child: Text("Task Manager", style: TextStyle(fontSize: 35, color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: DataSetBox(),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
           ),
+
         ],
       ),
     );
