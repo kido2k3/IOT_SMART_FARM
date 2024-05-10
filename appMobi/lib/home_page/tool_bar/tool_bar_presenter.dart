@@ -22,6 +22,7 @@ ToolBarPresenter toolBarPresenter = ToolBarPresenter();
 class ToolBarPresenter extends MvpPresenter<ToolBarView> {
   DataSetBoxPresenter _datasetboxpresenter = dataSetBoxPresenter;
 
+  bool isConnected = true;
   Map<String, dynamic> userMap = {};
   List<Map<String, dynamic>> RunningDataSet = [];
   List<Map<String, dynamic>> WaitingDataSet = [];

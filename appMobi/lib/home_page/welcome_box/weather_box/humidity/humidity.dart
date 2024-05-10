@@ -43,22 +43,20 @@ class _HumidityState extends State<Humidity> implements HumidityView {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        // width: 210,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.transparent.withOpacity(0.45),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(Icons.water_drop_outlined, size: 40, color: Colors.white,),
-            Text("$humid%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-            )
-          ],
-        ),
+    return Container(
+      // width: 210,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: Colors.transparent.withOpacity(0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.water_drop_outlined, size: 25, color: Colors.white,),
+          SizedBox(width: 15),
+          Text("$humid%", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: Colors.white),
+          )
+        ],
       ),
     );
   }

@@ -11,7 +11,6 @@ class ToolBar extends StatefulWidget {
 }
 
 class _ToolBarState extends State<ToolBar> implements ToolBarView {
-  bool _isConnected = true;
   late ToolBarPresenter _presenter;
 
   @override
@@ -24,47 +23,73 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(25),
+        color: Colors.transparent.withOpacity(0.15),
+        shape: BoxShape.rectangle,
+        border: Border(
+          top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+        ),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildButton(
-            onPressed: !_isConnected ? null : () => _presenter.newtaskOnPressed(context),
-            icon: Icon(Icons.add_circle_outline, size: 40),
-            label: 'New task',
-          ),
-          _buildButton(
-            onPressed: () => _presenter.newtaskOnPressed(context),
-            icon: Icon(Icons.history, size: 40),
-            label: 'Log',
-          ),
-          _buildButton(
-            onPressed: _isConnected ? null : () => _presenter.serverOnPressed(context),
-            icon: Icon(_isConnected ? Icons.sensors : Icons.sensors_off, size: 40),
-            label: 'Server',
-          ),
-        ],
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+        child: Row(
+          children: [
+            // _buildButton(
+            //   onPressed: () => _presenter.newtaskOnPressed(context),
+            //   icon: Icon(Icons.history, size: 40),
+            //   label: 'Log',
+            // ),
+            Expanded(
+              flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent.withOpacity(0),
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Icon(
+                    Icons.person_outline_outlined,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                  // Text('Pham Tien Dat',
+                  //   overflow: TextOverflow.ellipsis,
+                  //   style: TextStyle(
+                  //     color: Colors.white.withOpacity(0.5),
+                  //     fontSize: 30,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                ),
+
+            ),
+            Expanded(
+              flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: _buildButton(
+                    onPressed: _presenter.isConnected ? null : () => _presenter.serverOnPressed(context),
+                    icon: Icon(_presenter.isConnected ? Icons.sensors : Icons.sensors_off, size: 40, color: Colors.white),
+                  ),
+                ),
+
+            ),
+          ],
+        ),
     );
   }
 
-  Widget _buildButton({VoidCallback? onPressed, required Icon icon, required String label}) {
+  Widget _buildButton({VoidCallback? onPressed, required Icon icon}) {
     return Column(
       children: [
         IconButton(
           onPressed: onPressed,
           icon: icon,
         ),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: MyTextStyle.weather,
-        ),
+        // Text(
+        //   label,
+        //   textAlign: TextAlign.center,
+        //   style: MyTextStyle.weather,
+        // ),
       ],
     );
   }
@@ -72,7 +97,7 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
   @override
   void setStatus(bool status) {
     setState(() {
-      _isConnected = status;
+      _presenter.isConnected = status;
     });
   }
 }

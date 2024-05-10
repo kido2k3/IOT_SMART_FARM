@@ -102,9 +102,13 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0),
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(width: 1, color: Colors.white.withOpacity(0.25)),
-              ),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(0),
+                border: Border(
+                  top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                  // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                ),              ),
+              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,12 +121,11 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                           color: Colors.white.withOpacity(0),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.centerLeft,
                         margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        padding: const EdgeInsets.all(5),
                         child: Text(
                           "Running",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
                         ),
                       ),
                     ),
@@ -131,10 +134,10 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                        alignment: Alignment.centerRight,
                         child: SingleChildScrollView(
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -143,54 +146,70 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.8999999761581421),
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                _datasetboxpresenter.detailrunningtaskOnPressed(context, index, _toolbarpresenter);
-                                              },
-                                              child: Text(
-                                                '\t Name: ${_toolbarpresenter.RunningDataSet[index]['name']} \n'
-                                                    '\t Start Time: ${_toolbarpresenter.RunningDataSet[index]['start time']} \n'
-                                                    '\t Remaining Cycle: ${_toolbarpresenter.RunningDataSet[index]['remaining cycle']} \n',
-                                                style: TextStyle(fontSize: 15, color: Colors.black),
-                                              ),
-                                            ),
-                                            SizedBox(width: 2),
-                                            IconButton(
-                                              onPressed: () {
-                                                setState(() {
-
-                                                  Map<String, dynamic> deleteUser = {
-                                                    'code': 'delete',
-                                                    'id': '${_toolbarpresenter.RunningDataSet[index]["id"]}'
-                                                  };
-
-                                                  String jsonString = JsonEncoder.withIndent(' ').convert(deleteUser);
-                                                  adafruitServer.mqttHelp.publish('kido2k3/feeds/iot-mobile', jsonString);
-
-                                                  _toolbarpresenter.RunningDataSet.removeAt(index);
-                                                  if (_toolbarpresenter.RunningDataSet.length == 0) {
-                                                    _toolbarpresenter.id = 1;
-                                                  }
-                                                });
-                                              },
-                                              icon: Icon(Icons.cancel_outlined),
-                                              color: Colors.red,
-                                              iconSize: 40,
-                                            ),
-                                          ],
-                                        ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(0.75),
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border(
+                                        top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                        bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
                                       ),
-                                    ],
+                                      // borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 4,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              _datasetboxpresenter.detailrunningtaskOnPressed(context, index, _toolbarpresenter);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'Name: ${_toolbarpresenter.RunningDataSet[index]['name']}',
+                                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                                  overflow: TextOverflow.ellipsis,
+
+                                                ),
+                                                Text(
+                                                  'Start Time: ${_toolbarpresenter.RunningDataSet[index]['start time']} \n'
+                                                      'Remaining Cycle: ${_toolbarpresenter.RunningDataSet[index]['remaining cycle']}',
+                                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+
+                                                Map<String, dynamic> deleteUser = {
+                                                  'code': 'delete',
+                                                  'id': '${_toolbarpresenter.RunningDataSet[index]["id"]}'
+                                                };
+
+                                                String jsonString = JsonEncoder.withIndent(' ').convert(deleteUser);
+                                                adafruitServer.mqttHelp.publish('kido2k3/feeds/iot-mobile', jsonString);
+
+                                                _toolbarpresenter.RunningDataSet.removeAt(index);
+                                                if (_toolbarpresenter.RunningDataSet.length == 0) {
+                                                  _toolbarpresenter.id = 1;
+                                                }
+                                              });
+                                            },
+                                            icon: Icon(Icons.cancel_outlined),
+                                            color: Colors.red.shade900,
+                                            iconSize: 40,
+                                          ),
+                                        ),
+
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(height: 10),
                                 ],
@@ -205,15 +224,18 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
               ),
             ),
           ),
-          SizedBox(height: 15),
           Expanded(
             flex: 1,
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(width: 1, color: Colors.white.withOpacity(0.25)),
-              ),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(0),
+                border: Border(
+                  top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                  // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                ),              ),
+              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,24 +248,22 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                           color: Colors.white.withOpacity(0),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.centerLeft,
                         margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        padding: const EdgeInsets.all(5),
                         child: Text(
                           "Waiting",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 4,
                       child: Container(
-                        height: 100,
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                         alignment: Alignment.centerRight,
                         child: SingleChildScrollView(
                           child: ListView.builder(
@@ -253,29 +273,45 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.8999999761581421),
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextButton(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0),
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(25),
+                                      border: Border(
+                                        top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                        bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                      ),
+                                      // borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 4,
+                                            child: TextButton(
                                               onPressed: () {
                                                 _datasetboxpresenter.detailwaitingtaskOnPressed(context, index, _toolbarpresenter);
                                               },
-                                              child: Text(
-                                                '\t Name: ${_toolbarpresenter.WaitingDataSet[index]['name']} \n'
-                                                    '\t Start Time: ${_toolbarpresenter.WaitingDataSet[index]['start time']} \n'
-                                                    '\t Remaining Cycle: ${_toolbarpresenter.WaitingDataSet[index]['remaining cycle']} \n',
-                                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    'Name: ${_toolbarpresenter.WaitingDataSet[index]['name']}',
+                                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                                    overflow: TextOverflow.ellipsis,
+
+                                                  ),
+                                                  Text(
+                                                    'Start Time: ${_toolbarpresenter.WaitingDataSet[index]['start time']} \n'
+                                                        'Remaining Cycle: ${_toolbarpresenter.WaitingDataSet[index]['remaining cycle']}',
+                                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            SizedBox(width: 2),
-                                            IconButton(
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                            child: IconButton(
                                               onPressed: () {
                                                 setState(() {
 
@@ -294,13 +330,13 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                                 });
                                               },
                                               icon: Icon(Icons.cancel_outlined),
-                                              color: Colors.red,
+                                              color: Colors.red.shade900,
                                               iconSize: 40,
                                             ),
-                                          ],
                                         ),
-                                      ),
-                                    ],
+
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(height: 10),
                                 ],
