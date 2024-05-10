@@ -61,8 +61,11 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
     setState(() {
       Map<String, dynamic> foundUserMap = _toolbarpresenter.RunningDataSet.firstWhere((map) => map["id"] == id, orElse: () => {});
       if (foundUserMap.isNotEmpty) {
-        _toolbarpresenter.WaitingDataSet.add(foundUserMap);
+        if (foundUserMap["remaining cycle"] == 1) {
+          foundUserMap["remaining cycle"] = 0;
+        }
         _toolbarpresenter.RunningDataSet.remove(foundUserMap);
+        _toolbarpresenter.WaitingDataSet.add(foundUserMap);
       }
     });
   }

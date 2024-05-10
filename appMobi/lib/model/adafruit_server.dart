@@ -11,7 +11,7 @@ class AdafruitServer {
   final MqttHelp mqttHelp = MqttHelp(
       hostName: "io.adafruit.com",
       userName: "kido2k3",
-      password: "password",
+      password: "aio_LQPl28zwsOzYwN0LWUgFEadXiddY",
       feeds: [
         "kido2k3/feeds/iot-humidity",
         "kido2k3/feeds/iot-temperature",
