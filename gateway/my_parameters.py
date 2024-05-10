@@ -23,8 +23,8 @@ crc_lists = {
 SPEED = 2
 
 # for my_server.py
-LIST_OF_FEEDS = ["phong"]
-HOST = "mqtt.ohstem.vn"
+LIST_OF_FEEDS = ["iot-mobile", "iot-gateway", "iot-temperature", "iot-humidity"]
+HOST = "io.adafruit.com"
 USER = "kido2k3"
 PASSWORD = ""
 

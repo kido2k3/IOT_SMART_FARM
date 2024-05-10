@@ -90,13 +90,14 @@ def my_fsm_temperature():
     if data == -2:
         if count_temp % 10 == 0:   
             my_os.operation_system.add_process(command.get_Temperature)
+            print("sent temperature")
         elif count_temp/10 > 3:
             print("time out temperature")
             my_os.operation_system.remove_process(my_fsm_temperature)
             count_temp = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data/100)
         my_os.operation_system.remove_process(my_fsm_temperature)
     count_temp += 1
 
@@ -114,13 +115,14 @@ def my_fsm_humidity():
     if data == -2:
         if count_humid % 10 == 0:   
             my_os.operation_system.add_process(command.get_Humidity)
+            print("sent humidity")
         elif count_humid/10 > 3:
             print("time out humidity")
             my_os.operation_system.remove_process(my_fsm_humidity)
             count_humid = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data/100)
         my_os.operation_system.remove_process(my_fsm_humidity)
     count_humid += 1
 
