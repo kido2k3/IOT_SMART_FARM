@@ -46,12 +46,12 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
               flex: 1,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Text(_city + '  ',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
                       ),
                       const Icon(
                         Icons.location_on_outlined,
@@ -61,7 +61,7 @@ class _WeatherBoxState extends State<WeatherBox> implements WeatherView {
                     ],
                   ),
                   Text(_time,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
                       ),
                 ],
               ),

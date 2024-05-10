@@ -17,14 +17,14 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             SizedBox(
-              height: 20,
+              height: 25,
             ),
             Expanded(
-                flex: 23,
+                flex: 25,
                 child: WelcomeBox()
             ),
             Expanded(
-                flex: 60,
+                flex: 45,
                 child: TaskBox()
             ),
             Expanded(
