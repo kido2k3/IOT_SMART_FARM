@@ -52,7 +52,7 @@ class _TaskBoxState extends State<TaskBox> {
                         ),
                         alignment: Alignment.topCenter,
                         width: MediaQuery.of(context).size.width,
-                        child: Text("Task Manager", style: TextStyle(fontSize: 35, color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold)),
+                        child: Text("Task Manager", style: TextStyle(fontSize: 25, color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.bold)),
                       ),
                     ),
                     Expanded(

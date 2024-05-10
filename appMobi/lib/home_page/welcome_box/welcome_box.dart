@@ -51,7 +51,7 @@ class _WelcomeBoxState extends State<WelcomeBox> implements WelcomeBoxView {
                       "Welcome Đạt",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 40,
+                        fontSize: 30,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
                         height: 0,

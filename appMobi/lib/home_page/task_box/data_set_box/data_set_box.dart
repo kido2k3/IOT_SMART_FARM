@@ -119,7 +119,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                         padding: const EdgeInsets.all(5),
                         child: Text(
                           "Running",
-                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
                         ),
                       ),
                     ),
@@ -158,10 +158,10 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                                 '\t Name: ${_toolbarpresenter.RunningDataSet[index]['name']} \n'
                                                     '\t Start Time: ${_toolbarpresenter.RunningDataSet[index]['start time']} \n'
                                                     '\t Remaining Cycle: ${_toolbarpresenter.RunningDataSet[index]['remaining cycle']} \n',
-                                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                                style: TextStyle(fontSize: 15, color: Colors.black),
                                               ),
                                             ),
-                                            SizedBox(width: 10),
+                                            SizedBox(width: 2),
                                             IconButton(
                                               onPressed: () {
                                                 setState(() {
@@ -228,7 +228,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                         padding: const EdgeInsets.all(5),
                         child: Text(
                           "Waiting",
-                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
                         ),
                       ),
                     ),
@@ -268,10 +268,10 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                                 '\t Name: ${_toolbarpresenter.WaitingDataSet[index]['name']} \n'
                                                     '\t Start Time: ${_toolbarpresenter.WaitingDataSet[index]['start time']} \n'
                                                     '\t Remaining Cycle: ${_toolbarpresenter.WaitingDataSet[index]['remaining cycle']} \n',
-                                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                                style: TextStyle(fontSize: 15, color: Colors.black),
                                               ),
                                             ),
-                                            SizedBox(width: 10),
+                                            SizedBox(width: 2),
                                             IconButton(
                                               onPressed: () {
                                                 setState(() {

@@ -104,7 +104,7 @@ class Server:
         self.client.loop_start()
         # client loop forever is suitable for subscribe-only processes
 
-server_gateway = Server(["iot-mobile"], "io.adafruit.com","kido2k3","aio_LQPl28zwsOzYwN0LWUgFEadXiddY")
+server_gateway = Server(["iot-mobile"], "io.adafruit.com","kido2k3","")
 
 # for testing
 # import time
