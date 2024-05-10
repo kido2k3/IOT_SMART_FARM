@@ -1,6 +1,26 @@
 # this is server Connection module by paho-mqtt
 import paho.mqtt.client as mqtt
 import sys
+import json
+import my_task
+
+def iot_mobile_callback(json_data):
+    print("Parsed JSON data:", json_data)
+    code = json_data.get("code")
+    if code == "create":
+        id = json_data.get("id")
+        cycle_num = json_data.get("cycle")
+        mixer1 = json_data.get("mixer1")
+        mixer2 = json_data.get("mixer2")
+        mixer3 = json_data.get("mixer3")
+        area = json_data.get("area")
+        start_time = json_data.get("start time")
+        task = my_task.Task(id, cycle_num, [mixer1, mixer2, mixer3], area, start_time)
+        my_task.waiting.add(task)
+    if code == "delete":
+        id = json_data.get("id")
+        my_task.waiting.remove_by_id(id)
+        my_task.running.remove_by_id(id)
 
 class Server:
     # Some config paras
@@ -39,7 +59,26 @@ class Server:
         data = data.decode('utf-8')
         print(f'Feed {msg.topic} received new value: {data}')
         # write a call back function for handling data 
-        
+        #Parse JSON data
+        if "iot-mobile" in  msg.topic:
+            json_data = json.loads(data)
+            iot_mobile_callback(json_data)
+            # print("Parsed JSON data:", json_data)
+            # code = json_data.get("code")
+            # if code == "create":
+            #     id = json_data.get("id")
+            #     cycle_num = json_data.get("cycle")
+            #     mixer1 = json_data.get("mixer1")
+            #     mixer2 = json_data.get("mixer2")
+            #     mixer3 = json_data.get("mixer3")
+            #     area = json_data.get("area")
+            #     start_time = json_data.get("starttime")
+            #     task = my_task.Task(id, cycle_num, [mixer1, mixer2, mixer3], area, start_time)
+            #     my_task.waiting.add(task)
+            # if code == "delete":
+            #     id = json_data.get("id")
+            #     my_task.waiting.remove_by_id(id)
+            #     my_task.running.remove_by_id(id)
 
     def disconnected(self, client, user_data, rc):
         # Disconnected function will be called when the client disconnects.
@@ -65,25 +104,29 @@ class Server:
         self.client.loop_start()
         # client loop forever is suitable for subscribe-only processes
 
+server_gateway = Server(["iot-mobile"], "io.adafruit.com","kido2k3","")
 
 # for testing
-import time
-import json
-temp = Server([], "io.adafruit.com","kido2k3","aio_Npjc80KNOWkXyy5wRoVQpM5mSTmq")
-time.sleep(2)
-x = { "value": 22.587,
-    "lat": 38.1123,
-    "lon": -91.2325,
-    "ele": 112}
-y = json.dumps(x)
-temp.client.publish("kido2k3/feeds/iot-gateway",y)
-time.sleep(2)
-x = { "value": 40,
-    "lat": 38.1123,
-    "lon": -91.2325,
-    "ele": 112}
-y = json.dumps(x)
-temp.client.publish("kido2k3/feeds/iot-gateway",y)
-print("sent")
-while True:
-    pass
+# import time
+# import json
+# temp = Server([], "io.adafruit.com","kido2k3","")
+# time.sleep(2)
+# x =  {
+#     "code": "create",
+#     "id": "1",
+#     "mixer1": 23.2,
+#     "mixer2": 45.3,
+#     "mixer3": 23,
+#     "cycle": 5,
+#     "start time": "09:30"
+# }
+# h = {
+#     "code": "r2w",
+#     "id": "1",
+#     "start time": "09:30"
+# }
+# y = json.dumps(x)
+# temp.client.publish("kido2k3/feeds/iot-mobile",y)
+# print("sent")
+# while True:
+#     pass
