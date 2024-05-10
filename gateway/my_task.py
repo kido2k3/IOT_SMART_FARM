@@ -83,7 +83,6 @@ def check_running_task():
     # print(status)
     if running.is_empty() == False:
         if my_parameters.status == WAITING:
-@@ -97,23 +80,8 @@ def check_running_task():
             my_os.operation_system.remove_process(fsm.run_fsm)
             fsm = None
             if running.task_list[0].cycle_num == 0:

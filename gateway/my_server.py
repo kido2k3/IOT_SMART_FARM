@@ -104,12 +104,12 @@ class Server:
         self.client.loop_start()
         # client loop forever is suitable for subscribe-only processes
 
-server_gateway = Server(["iot-mobile"], "io.adafruit.com","kido2k3","aio_FlCI95Ez7GWrfgZwUTi8nZwFNDPs")
+server_gateway = Server(["iot-mobile"], "io.adafruit.com","kido2k3","")
 
 # for testing
 # import time
 # import json
-# temp = Server([], "io.adafruit.com","kido2k3","aio_FlCI95Ez7GWrfgZwUTi8nZwFNDPs")
+# temp = Server([], "io.adafruit.com","kido2k3","")
 # time.sleep(2)
 # x =  {
 #     "code": "create",

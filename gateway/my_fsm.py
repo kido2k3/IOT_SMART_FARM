@@ -2,6 +2,7 @@ import my_os
 import my_serial
 import my_crc
 import my_server
+import my_parameters
 
 class Command:
     def __init__(self, data=0, flag=0):
@@ -78,7 +79,7 @@ def my_fsm_temperature():
             count_temp = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data/100)
         my_os.operation_system.remove_process(my_fsm_temperature)
     count_temp += 1
 
@@ -102,7 +103,7 @@ def my_fsm_humidity():
             count_humid = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data/100)
         my_os.operation_system.remove_process(my_fsm_humidity)
     count_humid += 1
 
