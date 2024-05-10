@@ -17,6 +17,7 @@ class Task:
             self.start_time = start_time
         else:
             print("invalid mixer")
+
     def __str__(self) -> str:
         return f"Task {self.id}, {self.cycle_num} cycles, {self.mixer}(mixer1, 2, 3), area {self.area}, {self.start_time}"
 
@@ -24,8 +25,10 @@ class Task_List:
     # task_list = list()
     def __init__(self):
         self.task_list = []
+
     def is_empty(self):
         return len(self.task_list) == 0
+
     def add(self, task: Task):
         if self.is_empty():
             self.task_list.append(task)
@@ -50,8 +53,11 @@ class Task_List:
         for task in self.task_list:
             string += (str(task)+'\n')
         return string
+
+
 waiting = Task_List()
 running = Task_List()
+
 def check_waiting_task():
     # check the time of tasks in waiting list
     # if there is any in waiting list need to be run, remove that away the list, add that in running
@@ -74,6 +80,7 @@ def check_waiting_task():
                 waiting.task_list.remove(task)
 
 fsm = None
+
 def check_running_task():
 # check running list is empty or not.
 # If running list is not empty, run task index = 0, decrease cycle, remove and
@@ -83,6 +90,10 @@ def check_running_task():
     # print(status)
     if running.is_empty() == False:
         if my_parameters.status == WAITING:
+            fsm = FSM(my_fsm, running.task_list[0], command)
+            my_parameters.status = RUNNING
+            my_os.operation_system.add_process(fsm.run_fsm,0,1)
+        elif my_parameters.status == DONE:
             my_os.operation_system.remove_process(fsm.run_fsm)
             fsm = None
             if running.task_list[0].cycle_num == 0:
@@ -106,11 +117,14 @@ def check_running_task():
                 running.task_list.append(running.task_list.pop(0))
             my_parameters.status = WAITING
         # print("in check running",my_parameters.status)
+
+
 # for testing
 # from datetime import datetime
 # now = datetime.now()
 # current_time = now.strftime("%H:%M")
 # print("Current Time =", current_time, type(current_time))
+
 # task1 = Task("1", 5, [20, 35, 10], "2", "18:30")
 # task3 = Task("3", 5, [20, 35, 10], "2", "19:00")
 # task4 = Task("4", 5, [20, 35, 10], "2", "01:35")

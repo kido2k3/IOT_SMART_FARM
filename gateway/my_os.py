@@ -1,3 +1,4 @@
+
 class Process:
     def __init__(self, func, delay, period) -> None:
         self.func = func

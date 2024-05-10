@@ -52,7 +52,7 @@ class UART:
             else:
                 return -1
         return -2
-
+        
 serialUART = UART()
 # # for testing
 # temp = UART()

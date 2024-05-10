@@ -33,3 +33,4 @@ crc_calc = CRC_MOD_BUS(crc_lists)
 # from my_parameters import crc_lists
 # crc_calc = CRC_MOD_BUS(crc_lists)
 # print(crc_calc.export("MIXER1_ON"))
+

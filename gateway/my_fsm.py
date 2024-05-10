@@ -1,60 +1,77 @@
+import my_parameters
 import my_os
 import my_serial
 import my_crc
 import my_server
-import my_parameters
 
 class Command:
     def __init__(self, data=0, flag=0):
         self.data = data
         self.flag = flag
+
     def read_connection(self):
         self.data = my_serial.serialUART.ReadSerial()
+
     def turn_mixer_1_on(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER1_ON"))
         # turn mixer 1 off
+
     def turn_mixer_1_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER1_OFF"))
+
         # turn mixer 2 on
     def turn_mixer_2_on(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER2_ON"))
         # turn mixer 2 off
+
     def turn_mixer_2_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER2_OFF"))
+
         # turn mixer 3 on
     def turn_mixer_3_on(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER3_ON"))
         # turn mixer 3 off
+
     def turn_mixer_3_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("MIXER3_OFF"))
+
         # select area 1
     def select_area_1(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR1_ON"))
         # unselect area 1
+
     def unselect_area_1(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR1_OFF"))
+
         # select area 2
     def select_area_2(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR2_ON"))
         # unselect area 2
+
     def unselect_area_2(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR2_OFF"))
+
         # select area 3
     def select_area_3(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR3_ON"))
         # unselect area 3
+
     def unselect_area_3(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("SELECTOR3_OFF"))
+
         # turn in_pump on
     def turn_in_pump_on(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("PUMP_IN_ON"))
         # turn in_pump off
+
     def turn_in_pump_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("PUMP_IN_OFF"))
+
         # turn out_pump on
     def turn_out_pump_on(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("PUMP_OUT_ON"))
         # turn out_pump off
+
     def turn_out_pump_off(self):
         my_serial.serialUART.ser.write(my_crc.crc_calc.export("PUMP_OUT_OFF"))
 
@@ -79,7 +96,7 @@ def my_fsm_temperature():
             count_temp = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data/100)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data)
         my_os.operation_system.remove_process(my_fsm_temperature)
     count_temp += 1
 
@@ -103,7 +120,7 @@ def my_fsm_humidity():
             count_humid = 0
     elif data != -2:
         print(data)
-        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data/100)
+        my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data)
         my_os.operation_system.remove_process(my_fsm_humidity)
     count_humid += 1
 
@@ -248,6 +265,7 @@ def my_fsm(state, task, command, count, flag):
             command.flag = 0
             print("state pump out")
     elif state == my_parameters.ST_PUMP_OUT:
+
         if (command.data == -2 and command.flag == 0):
             if (count % 10 == 0):
                 my_os.operation_system.add_process(command.turn_out_pump_on)
@@ -305,6 +323,8 @@ def my_fsm(state, task, command, count, flag):
     
     count += 1
     return state, task, command, count, flag
+
+
 class FSM:
     def __init__(self, fsm, task, command, flag=True, count=0) -> None:
         self.state = my_parameters.ST_IDLE
@@ -314,19 +334,24 @@ class FSM:
         self.command = command
         self.flag = flag
         # self.status = status
+
     def run_fsm(self):
         self.state, self.task, self.command, self.count, self.flag = self.fsm(
             self.state, self.task, self.command, self.count, self.flag)
+
     def add(self):
         # global operation_system
         my_os.operation_system.add_process(self.run_fsm, 0, 1)
+
     def rmv(self):
         # global operation_system
         my_os.operation_system.remove_process(self.run_fsm)
+
     def check(self):
         # global operation_system
         if self.flag == False:
             my_os.operation_system.remove_process(self.run_fsm)
+
 # for testing
 # tao file moi de test
 # from time import sleep
@@ -334,6 +359,7 @@ class FSM:
 # from my_fsm import *
 # from my_task import Task
 # from my_mini_task import miniTask
+
 # os = OS()
 # task1 = Task("1", 5, [20, 35, 10], "2", "18:30")
 # childTask = miniTask(task1)
@@ -347,4 +373,4 @@ class FSM:
 #     os.dispatch_process()
 #     # print(task1.cycle_num)
 #     # print(class_fsm.flag)
-# sleep(0.1)
+#     sleep(0.1)
