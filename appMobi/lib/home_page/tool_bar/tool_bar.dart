@@ -12,6 +12,7 @@ class ToolBar extends StatefulWidget {
 
 class _ToolBarState extends State<ToolBar> implements ToolBarView {
   late ToolBarPresenter _presenter;
+  bool isUser = true;
 
   @override
   void initState() {
@@ -39,31 +40,34 @@ class _ToolBarState extends State<ToolBar> implements ToolBarView {
             //   label: 'Log',
             // ),
             Expanded(
-              flex: 1,
+              flex: 3,
                 child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.transparent.withOpacity(0),
                     shape: BoxShape.rectangle,
                   ),
-                  child: Icon(
-                    Icons.person_outline_outlined,
-                    color: Colors.white,
-                    size: 40,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isUser = !isUser;
+                      });
+                    },
+                    icon: isUser ? Icon(Icons.person_outline_outlined, color: Colors.white, size: 40) :
+                    Text('Pham Tien Dat',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 27,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                  // Text('Pham Tien Dat',
-                  //   overflow: TextOverflow.ellipsis,
-                  //   style: TextStyle(
-                  //     color: Colors.white.withOpacity(0.5),
-                  //     fontSize: 30,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                 ),
 
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
                 child: Container(
                   alignment: Alignment.center,
                   child: _buildButton(

@@ -88,6 +88,26 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
   }
 
   @override
+  void deleterunningTask (int index) {
+    setState(() {
+      _toolbarpresenter.WaitingDataSet.removeAt(index);
+      if (_toolbarpresenter.WaitingDataSet.length == 0) {
+        _toolbarpresenter.id = 1;
+      }
+    });
+  }
+
+  @override
+  void deletewaitingTask (int index) {
+    setState(() {
+      _toolbarpresenter.RunningDataSet.removeAt(index);
+      if (_toolbarpresenter.RunningDataSet.length == 0) {
+        _toolbarpresenter.id = 1;
+      }
+    });
+  }
+
+  @override
   Widget build (BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -148,7 +168,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.75),
+                                      color: Colors.green.withOpacity(0.55),
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border(
@@ -187,19 +207,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                           child: IconButton(
                                             onPressed: () {
                                               setState(() {
-
-                                                Map<String, dynamic> deleteUser = {
-                                                  'code': 'delete',
-                                                  'id': '${_toolbarpresenter.RunningDataSet[index]["id"]}'
-                                                };
-
-                                                String jsonString = JsonEncoder.withIndent(' ').convert(deleteUser);
-                                                adafruitServer.mqttHelp.publish('kido2k3/feeds/iot-mobile', jsonString);
-
-                                                _toolbarpresenter.RunningDataSet.removeAt(index);
-                                                if (_toolbarpresenter.RunningDataSet.length == 0) {
-                                                  _toolbarpresenter.id = 1;
-                                                }
+                                                _datasetboxpresenter.deleterunningtaskOnPressed(context, _toolbarpresenter, index);
                                               });
                                             },
                                             icon: Icon(Icons.cancel_outlined),
@@ -314,19 +322,7 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                             child: IconButton(
                                               onPressed: () {
                                                 setState(() {
-
-                                                  Map<String, dynamic> deleteUser = {
-                                                    'code': 'delete',
-                                                    'id': '${_toolbarpresenter.WaitingDataSet[index]["id"]}'
-                                                  };
-
-                                                  String jsonString = JsonEncoder.withIndent(' ').convert(deleteUser);
-                                                  adafruitServer.mqttHelp.publish('kido2k3/feeds/iot-mobile', jsonString);
-
-                                                  _toolbarpresenter.WaitingDataSet.removeAt(index);
-                                                  if (_toolbarpresenter.WaitingDataSet.length == 0) {
-                                                    _toolbarpresenter.id = 1;
-                                                  }
+                                                  _datasetboxpresenter.deletewaitingtaskOnPressed(context, _toolbarpresenter, index);
                                                 });
                                               },
                                               icon: Icon(Icons.cancel_outlined),
