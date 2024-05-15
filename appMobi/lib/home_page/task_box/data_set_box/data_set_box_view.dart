@@ -9,6 +9,7 @@ abstract class DataSetBoxView extends MvpView {
   void r2w(String id);
   void update(String id, int cycle);
 
-  late ToolBarPresenter _toolbarpresenter;
-  late DataSetBoxPresenter _datasetboxpresenter;
+  void deleterunningTask(int index);
+  void deletewaitingTask(int index);
+
 }

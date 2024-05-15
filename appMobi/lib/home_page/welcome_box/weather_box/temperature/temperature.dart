@@ -40,22 +40,20 @@ class _TemperatureState extends State<Temperature> implements TemperatureView {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        // width: 210,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.transparent.withOpacity(0.45),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(Icons.device_thermostat_outlined, size: 40, color: Colors.white,),
-            Text("$temp℃", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-            )
-          ],
-        ),
+    return Container(
+      // width: 210,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: Colors.transparent.withOpacity(0),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Icon(Icons.device_thermostat_outlined, size: 25, color: Colors.white,),
+          Text("$temp°", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 75, color: Colors.white),
+          )
+        ],
       ),
     );
   }
