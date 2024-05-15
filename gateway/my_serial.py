@@ -30,8 +30,8 @@ class UART:
             if "USB" in strPort:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
-        # return commPort
-        return "COM5"
+        return commPort
+        # return "COM5"
 
     def ProcessData(self, data):
         pass
