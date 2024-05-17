@@ -19,10 +19,10 @@ class CRC_MOD_BUS:
                 else:
                     temp_crc = temp_crc >> 1
 
-        crc_low = temp_crc >> 8
-        crc_high = temp_crc % 256
-        # return [crc_low, crc_high]
-        return [crc_high, crc_low]
+        crc_high = temp_crc >> 8
+        crc_low = temp_crc % 256
+        return [crc_low, crc_high]
+        # return [crc_high, crc_low]
 
     def export(self, name: str) -> list:
         crc_check = self.calculate(self.crc_lists[name])
