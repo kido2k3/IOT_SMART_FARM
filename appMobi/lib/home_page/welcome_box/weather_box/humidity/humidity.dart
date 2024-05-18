@@ -52,9 +52,9 @@ class _HumidityState extends State<Humidity> implements HumidityView {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.water_drop_outlined, size: 25, color: Colors.white,),
-          SizedBox(width: 15),
-          Text("$humid%", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: Colors.white),
+          Icon(Icons.water_drop_outlined, size: 25, color: Colors.black,),
+          // SizedBox(width: 15),
+          Text("$humid%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           )
         ],
       ),

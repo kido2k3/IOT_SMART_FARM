@@ -1,5 +1,6 @@
 import 'package:app_mobi/home_page/task_box/task_box.dart';
-import 'package:app_mobi/home_page/tool_bar/tool_bar.dart';
+import 'package:app_mobi/home_page/welcome_box/tool_bar/tool_bar.dart';
+import 'package:app_mobi/home_page/welcome_box/weather_box/humidity/humidity.dart';
 import 'package:app_mobi/home_page/welcome_box/welcome_box.dart';
 import 'package:app_mobi/my_share/background.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,27 +12,25 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Column(
       children: [
-        // Background(),
-        Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-                flex: 20,
-                child: WelcomeBox()
-            ),
-            Expanded(
-                flex: 45,
-                child: TaskBox()
-            ),
-            Expanded(
-                flex: 6,
-                child: ToolBar()
-            ),
-          ],
+        SizedBox(
+          height: 25,
+        ),
+        Expanded(
+          flex: 10,
+          child: WelcomeBox(),
+        ),
+        Expanded(
+            flex: 47,
+            child: TaskBox()
+        ),
+        Expanded(
+          flex: 5,
+          child: ToolBar(),
+        ),
+        SizedBox(
+          height: 5,
         ),
       ],
     );
