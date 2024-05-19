@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/adafruit_server.dart';
-import '../../tool_bar/tool_bar_presenter.dart';
+import '../../welcome_box/tool_bar/tool_bar_presenter.dart';
 
 DataSetBoxPresenter dataSetBoxPresenter = DataSetBoxPresenter();
 
@@ -156,7 +156,7 @@ class DataSetBoxPresenter extends MvpPresenter<DataSetBoxView> {
                             children: [
                               Text(
                                 'Name: ${_toolbarpresenter.WaitingDataSet[index]['name']}',
-                                overflow: TextOverflow.ellipsis,
+                                // overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,

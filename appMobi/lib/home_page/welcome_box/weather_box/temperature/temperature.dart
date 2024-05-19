@@ -50,8 +50,8 @@ class _TemperatureState extends State<Temperature> implements TemperatureView {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Icon(Icons.device_thermostat_outlined, size: 25, color: Colors.white,),
-          Text("$temp°", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 75, color: Colors.white),
+          Icon(Icons.device_thermostat_outlined, size: 25, color: Colors.black),
+          Text("$temp°", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           )
         ],
       ),
