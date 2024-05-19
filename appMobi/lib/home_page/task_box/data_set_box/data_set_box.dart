@@ -9,8 +9,8 @@ import 'package:app_mobi/my_share/user.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../../../model/adafruit_server.dart';
-import '../../tool_bar/tool_bar_presenter.dart';
-import '../../tool_bar/tool_bar_view.dart';
+import '../../welcome_box/tool_bar/tool_bar_presenter.dart';
+import '../../welcome_box/tool_bar/tool_bar_view.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import '../task_box_view.dart';
 
@@ -24,7 +24,7 @@ class DataSetBox extends StatefulWidget {
 class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, TaskBoxView, ToolBarView {
   late ToolBarPresenter _toolbarpresenter;
   late DataSetBoxPresenter _datasetboxpresenter;
-
+  bool _showDeleteButton = false;
 
   @override
   void initState() {
@@ -114,188 +114,187 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
         color: Colors.white.withOpacity(0),
         borderRadius: BorderRadius.circular(25),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0),
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(0),
-                border: Border(
-                  top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                  // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                ),              ),
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              flex: 2,
               child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        child: Text(
-                          "Running",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                        alignment: Alignment.centerRight,
-                        child: SingleChildScrollView(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _toolbarpresenter.RunningDataSet.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.55),
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border(
-                                        top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                                        bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                                      ),
-                                      // borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              _datasetboxpresenter.detailrunningtaskOnPressed(context, index, _toolbarpresenter);
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'Name: ${_toolbarpresenter.RunningDataSet[index]['name']}',
-                                                  style: TextStyle(fontSize: 20, color: Colors.white),
-                                                  overflow: TextOverflow.ellipsis,
-
-                                                ),
-                                                Text(
-                                                  'Start Time: ${_toolbarpresenter.RunningDataSet[index]['start time']} \n'
-                                                      'Remaining Cycle: ${_toolbarpresenter.RunningDataSet[index]['remaining cycle']}',
-                                                  style: TextStyle(fontSize: 20, color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _datasetboxpresenter.deleterunningtaskOnPressed(context, _toolbarpresenter, index);
-                                              });
-                                            },
-                                            icon: Icon(Icons.cancel_outlined),
-                                            color: Colors.red.shade900,
-                                            iconSize: 40,
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                ],
-                              );
-                            },
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border(
+                    top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                    // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                  ),              ),
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: Container(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          // alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                          child: Text(
+                            "Running",
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                          // alignment: Alignment.centerRight,
+                          child: SingleChildScrollView(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: _toolbarpresenter.RunningDataSet.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.withOpacity(0.55),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border(
+                                          top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                          bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                        ),
+                                        // borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 5,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                _datasetboxpresenter.detailrunningtaskOnPressed(context, index, _toolbarpresenter);
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    '${_toolbarpresenter.RunningDataSet[index]['name']}',
+                                                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                                    overflow: TextOverflow.ellipsis,
+
+                                                  ),
+                                                  Text(
+                                                    'Start Time: ${_toolbarpresenter.RunningDataSet[index]['start time']} | '
+                                                        'Remain Cycle: ${_toolbarpresenter.RunningDataSet[index]['remaining cycle']}',
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  _datasetboxpresenter.deleterunningtaskOnPressed(context, _toolbarpresenter, index);
+                                                });
+                                              },
+                                              icon: Icon(Icons.cancel_outlined),
+                                              color: Colors.red.shade900,
+                                              iconSize: 35,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0),
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(0),
-                border: Border(
-                  top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                  // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                ),              ),
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            Expanded(
+              flex: 1,
               child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        child: Text(
-                          "Waiting",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border(
+                    top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                    // bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                  ),              ),
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          // alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                          child: Text(
+                            "Waiting",
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                        alignment: Alignment.centerRight,
-                        child: SingleChildScrollView(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _toolbarpresenter.WaitingDataSet.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0),
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(25),
-                                      border: Border(
-                                        top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
-                                        bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                          // alignment: Alignment.centerRight,
+                          child: SingleChildScrollView(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: _toolbarpresenter.WaitingDataSet.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.brown.withOpacity(0.45),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(25),
+                                        border: Border(
+                                          top: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                          bottom: BorderSide(width: 1, color: Colors.white.withOpacity(0.25)),
+                                        ),
+                                        // borderRadius: BorderRadius.circular(20),
                                       ),
-                                      // borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 5,
                                             child: TextButton(
                                               onPressed: () {
                                                 _datasetboxpresenter.detailwaitingtaskOnPressed(context, index, _toolbarpresenter);
@@ -303,52 +302,52 @@ class _DataSetBoxState extends State<DataSetBox> implements DataSetBoxView, Task
                                               child: Column(
                                                 children: [
                                                   Text(
-                                                    'Name: ${_toolbarpresenter.WaitingDataSet[index]['name']}',
-                                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                                    '${_toolbarpresenter.WaitingDataSet[index]['name']}',
+                                                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                                                     overflow: TextOverflow.ellipsis,
 
                                                   ),
                                                   Text(
-                                                    'Start Time: ${_toolbarpresenter.WaitingDataSet[index]['start time']} \n'
-                                                        'Remaining Cycle: ${_toolbarpresenter.WaitingDataSet[index]['remaining cycle']}',
-                                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                                    'Start Time: ${_toolbarpresenter.WaitingDataSet[index]['start time']} | '
+                                                        'Remain Cycle: ${_toolbarpresenter.WaitingDataSet[index]['remaining cycle']}',
+                                                    style: TextStyle(fontSize: 15, color: Colors.white),
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
+                                          ),
+                                          Expanded(
+                                            flex: 1,
                                             child: IconButton(
                                               onPressed: () {
                                                 setState(() {
                                                   _datasetboxpresenter.deletewaitingtaskOnPressed(context, _toolbarpresenter, index);
                                                 });
                                               },
-                                              icon: Icon(Icons.cancel_outlined),
-                                              color: Colors.red.shade900,
-                                              iconSize: 40,
+                                              icon: Icon(Icons.cancel_outlined, color: Colors.red.shade900),
+                                              iconSize: 35,
                                             ),
-                                        ),
+                                          ),
 
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10),
-                                ],
-                              );
-                            },
+                                    SizedBox(height: 10),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
     );
   }
 

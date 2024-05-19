@@ -1,7 +1,4 @@
 import 'package:app_mobi/home_page/home_page.dart';
-import 'package:app_mobi/main.dart';
-import 'package:app_mobi/my_share/background.dart';
-import 'package:app_mobi/my_share/my_text_style.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget{
@@ -13,10 +10,10 @@ class MainScreen extends StatelessWidget{
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurpleAccent, Colors.blueAccent], // Các màu sắc cho gradient
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.0, 0.8], // Điểm dừng của gradient
+            colors: [Colors.green.shade600.withOpacity(0.7), Colors.teal.shade300, Colors.yellow.shade300], // Các màu sắc cho gradient
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.0, 0.5, 1.0], // Điểm dừng của gradient
             tileMode: TileMode.clamp,
           ),
         ),
