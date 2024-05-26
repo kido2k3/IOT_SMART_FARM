@@ -384,7 +384,6 @@ def my_fsm(state, task, command, count, flag):
                 # state = my_parameters.ST_END_STATE
                 state = my_parameters.ST_MID_6_7
                 command.flag = 0
-                task.cycle_num -= 1
     elif state == my_parameters.ST_MID_6_7:
         if (command.data < 0):
             if (count % 10 == 0):
