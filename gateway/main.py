@@ -2,17 +2,17 @@ import time
 import my_os
 import my_task
 import my_fsm
-import my_ai
+# import my_ai
 if True:
     my_os.operation_system.add_process(my_task.check_waiting_task, 0, 5)
     my_os.operation_system.add_process(my_task.check_running_task, 0, 1)
     # 1 time / 5 seconds
     my_os.operation_system.add_process(my_fsm.get_humidity, 20, 100)
     my_os.operation_system.add_process(my_fsm.get_temperature, 0, 100)
-    my_os.operation_system.add_process(
-        my_ai.temperature_model.retrain, 36000, 36000)
-    my_os.operation_system.add_process(
-        my_ai.humidity_model.retrain, 36000, 36000)
+    # my_os.operation_system.add_process(
+    #     my_ai.temperature_model.retrain, 36000, 36000)
+    # my_os.operation_system.add_process(
+    #     my_ai.humidity_model.retrain, 36000, 36000)
 cnt = 0
 second = 0
 

@@ -3,7 +3,7 @@ import my_os
 import my_serial
 import my_crc
 import my_server
-import my_ai
+# import my_ai
 class Command:
     def __init__(self, data=0, flag=0):
         self.data = data
@@ -97,7 +97,7 @@ def my_fsm_temperature():
             count_temp = 0
     elif data >= 0:
         print(data)
-        my_ai.humidity_model.verification(data)
+        # my_ai.humidity_model.verification(data)
         my_server.server_gateway.client.publish("kido2k3/feeds/iot-temperature", data/100)
         my_os.operation_system.remove_process(my_fsm_temperature)
     count_temp += 1
@@ -123,7 +123,7 @@ def my_fsm_humidity():
             count_humid = 0
     elif data >= 0:
         print(data)
-        my_ai.humidity_model.verification(data)
+        # my_ai.humidity_model.verification(data)
         my_server.server_gateway.client.publish("kido2k3/feeds/iot-humidity", data/100)
         my_os.operation_system.remove_process(my_fsm_humidity)
     count_humid += 1
